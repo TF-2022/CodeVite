@@ -31,7 +31,6 @@
   align-items: center;
   color: var(--text-color);
   font-size: 1.3rem;
-  padding-bottom: 10px;
   border-bottom: 1px solid var(--cvt-color-grey-light);  
   box-shadow: var(--cvt-sw);
 }

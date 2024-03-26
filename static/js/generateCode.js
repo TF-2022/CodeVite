@@ -346,9 +346,9 @@ class InputElement extends BaseElement {
 class ToggleSwitchElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
-        this.groupId = `${this.uniqueId}`; 
-        this.switchId = `toggle-${this.uniqueId}`; 
-        this.contentId = `toggle-content-${this.uniqueId}`; 
+        this.groupId = `${this.uniqueId}`;
+        this.switchId = `toggle-${this.uniqueId}`;
+        this.contentId = `toggle-content-${this.uniqueId}`;
     }
 
     generateCode() {
@@ -464,7 +464,7 @@ class DragAndDropElement extends BaseElement {
 class TabsElement extends BaseElement {
     constructor(type, className, content, tabCount = 2) {
         super(type, className, content);
-        this.tabCount = tabCount; 
+        this.tabCount = tabCount;
     }
 
     generateCode() {
@@ -500,6 +500,75 @@ class TabsElement extends BaseElement {
     }
 }
 
+class TablesElement extends BaseElement {
+    constructor() {
+        super();
+        const columnsInput = document.getElementById('columnsTableCount');
+        this.columnsTableCount = parseInt(columnsInput.value, 10) || 3;
+        this.isEditable = document.getElementById('checkbox-6c8aqohwj').checked;
+        this.isClickable = document.getElementById('checkbox-g3sf2q5fu').checked;
+    }
+
+    generateCode() {
+        const tableId = `table-${this.uniqueId}`;
+        const modalId = `modal-${this.uniqueId}`;
+        let tableHtml = `<div class="table-responsive">\n`;
+        tableHtml += `  <table id="${tableId}" class="table">\n`;
+        tableHtml += `    <thead>\n`;
+        tableHtml += `      <tr>\n`;
+
+        for (let i = 0; i < this.columnsTableCount; i++) {
+            tableHtml += `        <th>Colonne ${i + 1}</th>\n`;
+        }
+
+        tableHtml += `      </tr>\n`;
+        tableHtml += `    </thead>\n`;
+        tableHtml += `    <tbody>\n`;
+        tableHtml += `      <tr>\n`;
+
+        for (let i = 0; i < this.columnsTableCount; i++) {
+            let cellContent = `Donnée ${i + 1}`;
+            let cellAttributes = this.isEditable ? ' contenteditable="true"' : '';
+            cellAttributes += this.isClickable ? ` onclick="showModal('${modalId}', this.innerText)"` : '';
+            tableHtml += `        <td${cellAttributes}>${cellContent}</td>\n`;
+        }
+
+        tableHtml += `      </tr>\n`;
+        tableHtml += `    </tbody>\n`;
+        tableHtml += `  </table>\n`;
+        tableHtml += `</div>\n`;
+
+        if (this.isClickable) {
+            tableHtml += `<div id="${modalId}" class="cvt-modal" tabindex="-1" aria-hidden="true" style="display:none;">\n`;
+            tableHtml += `  <div class="cvt-modal-content">\n`;
+            tableHtml += `    <div class="cvt-modal-header header-circle p-2">\n`;
+            tableHtml += `      <h5 class="cvt-title py-2">Contenu de la Cellule</h5>\n`;
+            tableHtml += `      <span class="cvt-close btn btn-close bg-light py-2" onclick="closeModal('${modalId}')"></span>\n`;
+            tableHtml += `    </div>\n`;
+            tableHtml += `    <div class="cvt-modal-body text-custom-cvt" id="${modalId}-body">\n`;
+            tableHtml += `      <!-- Le contenu de la cellule sera inséré ici -->\n`;
+            tableHtml += `    </div>\n`;
+            tableHtml += `  </div>\n`;
+            tableHtml += `</div>\n`;
+
+            tableHtml += `<script>\n`;
+            tableHtml += `  function showModal(modalId, content) {\n`;
+            tableHtml += `    document.getElementById(modalId + '-body').innerText = content;\n`;
+            tableHtml += `    document.getElementById(modalId).style.display = 'block';\n`;
+            tableHtml += `  }\n`;
+            tableHtml += `  function closeModal(modalId) {\n`;
+            tableHtml += `    document.getElementById(modalId).style.display = 'none';\n`;
+            tableHtml += `  }\n`;
+            tableHtml += `</script>\n`;
+        }
+
+        return tableHtml;
+    }
+}
+
+
+
+
 
 
 
@@ -524,6 +593,7 @@ const elementClasses = {
     'card': CardsElement,
     'drag-drop': DragAndDropElement,
     'tabs-nav': TabsElement,
+    'table': TablesElement,
 };
 
 function createElement(type, className, content) {

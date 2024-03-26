@@ -1,22 +1,24 @@
 
-:root {
+:root, .light-theme {
     --cvt-sw: 0 2px 4px rgba(0, 0, 0, 0.1);
     --effet-ombre: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
     --afd-color-blue-light: #3a8899;
     --radius-1: 5px;
     --radius-2: 15px;
-}
-.light-theme {
+
+    
     --background-color: #ffffff;
     --text-color: #333333;
     --accent-color: #5078F0;
     --secondary-background-color: #f4f5f7;
     --secondary-text-color: #555555;
     --cvt-color-grey-light: #d3d6db;
+    --code-editor: #f5eeee;
 
     background-color: var(--background-color);
     color: var(--text-color);
 }
+
 
 .dark-theme {
     --background-color: #1E1E1E;
@@ -25,6 +27,7 @@
     --secondary-background-color: #252526;
     --secondary-text-color: #CCCCCC;
     --cvt-color-grey-light: #31374a;
+    --code-editor: #2F3129;
 
     background-color: var(--background-color);
     color: var(--text-color);
