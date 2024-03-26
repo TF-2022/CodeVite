@@ -346,9 +346,9 @@ class InputElement extends BaseElement {
 class ToggleSwitchElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
-        this.groupId = `${this.uniqueId}`; // ID unique pour le groupe de toggles
-        this.switchId = `toggle-${this.uniqueId}`; // ID unique pour chaque toggle
-        this.contentId = `toggle-content-${this.uniqueId}`; // ID unique pour chaque contenu de toggle
+        this.groupId = `${this.uniqueId}`; 
+        this.switchId = `toggle-${this.uniqueId}`; 
+        this.contentId = `toggle-content-${this.uniqueId}`; 
     }
 
     generateCode() {
