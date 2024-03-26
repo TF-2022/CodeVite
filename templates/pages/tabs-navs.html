@@ -1,0 +1,18 @@
+<div data-tab-group="cvt-tab-container">
+    <input type="radio" id="tab-1" name="tab-" value="" data-tab-target="tab-content-1" style="display: none;">
+    <label for="tab-1">AFD Tab 1</label>
+
+    <input type="radio" id="tab-2" name="tab-" value="" data-tab-target="tab-content-2" style="display: none;">
+    <label for="tab-2">AFD Tab 2</label>
+</div>
+<div id="tab-content-1" class="tab-content" data-tab-content="cvt-tab-container">
+    Contenu pour l'AFD onglet 1
+</div>
+<div id="tab-content-2" class="tab-content" style="display: none;" data-tab-content="cvt-tab-container">
+    Contenu pour l'AFD onglet 2
+</div>
+<hr>
+<p>Nombre de tabs</p>
+<input type="number" id="tabsCount" value="3" min="1">
+<button class="btn custom-button custom-relief" data-type="tabs-nav">Générer Tabs</button>
+

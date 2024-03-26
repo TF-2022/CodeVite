@@ -1,0 +1,21 @@
+
+
+#editor {
+    height: 400px;
+    width: 100%;
+}
+
+#codeContainer {
+    position: relative;
+    margin-top: 20px;
+}
+
+
+
+.preview-generate-code {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    max-height: 130px;
+    overflow-y: auto;
+}

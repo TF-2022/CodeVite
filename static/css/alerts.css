@@ -1,0 +1,40 @@
+.notification {
+    position: fixed;
+    bottom: 30px;
+    right: -300px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    transition: right 0.5s;
+    z-index: 200000000000;
+}
+
+.notification.show {
+    right: 20px;
+}
+
+.notification.add {
+    background-color: #17a2b8;
+}
+
+.notification.remove {
+    background-color: #dc3545;
+}
+
+.notification.success2 {
+    background-color: var(--cvt-color-grey-light);
+    border: 2px solid #28a745;
+}
+
+.notification.warning {
+    color: var(--text-color);
+    border: 2px solid #ffc107;
+    background-color: var(--cvt-color-grey-light);
+}
+
+.notification.info {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+}

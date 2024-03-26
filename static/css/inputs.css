@@ -1,0 +1,67 @@
+.cvt-form-group {
+    position: relative;
+    border-bottom: 2px solid #3874ff3d;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.cvt-form-group:focus-within {
+    box-shadow: 0 0 0 2px #3874ff3d;
+    border-radius: var(--radius-2);
+    border-bottom: 2px solid transparent;
+}
+
+.cvt-form-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.cvt-form-group label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    margin: 0;
+    transition: all 0.2s;
+    color: #9b9b9b;
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.cvt-label-active {
+    top: -14px !important;
+    left: 10px !important;
+    font-size: smaller !important;
+    background-color: var(--background-color) ;
+    padding: 5px 10px !important;
+}
+
+.cvt-form-group input:focus+label {
+    top: -14px;
+    left: 10px;
+    color: #2f9bb3;
+    font-size: smaller;
+    background-color: var(--background-color);
+    padding: 5px 10px;
+}
+
+
+.cvt-form-group #searchInputTable+label {
+    font-size: 10px;
+}
+
+.cvt-form-group #searchInputTable {
+    padding: 3px;
+}
+
+.cvt-form-group.searchCotTable {
+    margin: 0;
+}
+.cvt-form-group.search-input:focus-within {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}

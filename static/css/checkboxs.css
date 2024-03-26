@@ -1,0 +1,119 @@
+.checkbox-cvt,
+.radio-cvt {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}
+
+.checkbox-cvt input,
+.radio-cvt input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark-cvt,
+.radiomark-cvt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+.radiomark-cvt {
+    border-radius: 50%;
+    background-color: #eee;
+}
+
+.checkbox-cvt input:checked~.checkmark-cvt,
+.radio-cvt input:checked~.radiomark-cvt {
+    background-color: #2196F3;
+}
+
+.checkbox-cvt .checkmark-cvt:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+@keyframes radiomark-cvt-check {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.radio-cvt input:checked~.radiomark-cvt:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 11px;
+    height: 11px;
+    background-color: white;
+    border-radius: 50%;
+    animation: radiomark-cvt-check 0.3s ease forwards;
+}
+
+@keyframes checkmark-cvt {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        transform: rotate(45deg);
+    }
+
+    50% {
+        width: 5px;
+        height: 0;
+        opacity: 1;
+        transform: rotate(45deg);
+    }
+
+    100% {
+        width: 8px;
+        height: 13px;
+        opacity: 1;
+        transform: rotate(45deg);
+    }
+}
+
+.checkbox-cvt input:checked~.checkmark-cvt:after {
+    animation: checkmark-cvt 0.3s ease forwards;
+}
+
+@keyframes uncheckmark {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.checkbox-cvt input:not(:checked)~.checkmark-cvt:after {
+    animation: uncheckmark 0.2s ease forwards;
+}
+
+.radio-cvt input:not(:checked)~.radiomark-cvt:after {
+    animation: none;
+}

@@ -1,0 +1,16 @@
+.cvt-container-drag {
+    width: 45%;
+    height: 300px;
+    border-radius: var(--radius-1);
+    display: inline-block;
+    vertical-align: top;
+    box-shadow: var(--cvt-sw);
+    overflow-y: auto;
+}
+
+.cvt-draggable-element {
+    margin: 10px;
+    padding: 10px;
+    background-color: var(--cvt-color-grey-light);
+    cursor: move;
+}

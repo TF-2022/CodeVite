@@ -1,0 +1,124 @@
+/* header */
+.navbar {
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
+    box-shadow: var(--cvt-sw);
+    border-bottom: 1px solid var(--cvt-color-grey-light);
+}
+
+/* sidebar vertical */
+.sidebar-fixed {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 256px;
+    height: calc(100vh - 56px);
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
+    border-right: 1px solid var(--cvt-color-grey-light);
+    box-shadow: rgba(0, 0, 0, 0.28) 0px 0px 8px;
+    transition: width 100ms cubic-bezier(0, 0, 0.2, 1) 0s;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-collapsed {
+    width: 60px;
+}
+
+.main-content-cvt.collapsed {
+    margin-left: 60px;
+}
+
+.main-content-cvt.expanded {
+    margin-left: 256px;
+}
+
+.sidebar-collapsed #bottom-btn {
+    display: none;
+}
+
+/* content */
+main {
+    padding-top: 56px;
+}
+
+.sidebar-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+}
+
+.sidebar-bottom {
+    padding: 20px;
+    border-top: 1px solid var(--cvt-color-grey-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    /* Important pour empêcher le rétrécissement */
+}
+
+.cvt-sidebar-toggle-btn {
+    position: absolute;
+    left: 12px;
+    cursor: pointer;
+    margin-left: 5px;
+    border: none;
+    font-size: 18px;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.cvt-sidebar-toggle-btn:hover {
+    background-color: var(--cvt-color-grey-light);
+    border-radius: 50%;
+}
+
+/* liens de la sidebar */
+.cvt-nav-item {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    padding: 0px 0px 0px 24px;
+    height: 44px;
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    -webkit-tap-highlight-color: transparent;
+    font-family: sans-serif;
+    letter-spacing: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cvt-nav-item:hover {
+    background-color: var(--background-color);
+}
+
+.cvt-nav-item.active {
+    background-color: var(--background-color);
+}
+
+.cvt-nav-item i,
+.cvt-nav-item p {
+    margin: 0;
+}
+
+.cvt-nav-item p {
+    padding-left: 20px;
+}
+
+.border-active {
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    width: 3px;
+    background-color: rgb(32, 33, 36);
+    border: none;
+    border-radius: 3px 0px 0px 3px;
+}

@@ -1,0 +1,17 @@
+.custom-button {
+    color: var(--text-color);
+    background-color: transparent;
+    border-radius: var(--radius-1);
+}
+
+.custom-button:hover {
+    background-color: var(--cvt-color-grey-light);
+    color: var(--text-color);
+    border-radius: var(--radius-1);
+}
+
+.custom-relief {
+    box-shadow: var(--effet-ombre);
+}
+
+

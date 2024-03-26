@@ -1,0 +1,24 @@
+.cvt-btn-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    width: 29px;
+    height: 29px;
+    cursor: pointer;
+    box-shadow: 8px 8px 15px #a3b1c6, -8px -8px 15px var(--background-color);
+    font-size: 24px;
+    background-color: var(--background-color);
+}
+
+[data-theme='light'] .cvt-btn-theme-toggle {
+    background-color: #ffcc853d;
+    color: #e5780b;
+}
+
+[data-theme='dark'] .cvt-btn-theme-toggle {
+    background-color: #3874ff3d;
+    box-shadow: 5px 5px 10px #23262a, -5px -5px 10px #2f3740;
+    color: #ffffff;
+}
