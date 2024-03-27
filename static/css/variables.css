@@ -5,7 +5,9 @@
     --afd-color-blue-light: #3a8899;
     --radius-1: 5px;
     --radius-2: 15px;
-
+    --focus-border-color: #80bdff;
+    --focus-shadow-color: rgba(0, 123, 255, 0.5);
+  
     
     --background-color: #ffffff;
     --text-color: #333333;

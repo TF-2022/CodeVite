@@ -1,13 +1,35 @@
-
-
-<select id="typeCards" class="form-select">
-    <option value="normal">Normal</option>
-    <option value="shadow">Shadow</option>
-    <option value="all-card">Titre+body+footer</option>
-    <option value="title-color">Avec titre</option>
-</select>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showHeader">Header</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showTitle">Titre</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showImage">Image</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showBodyText">Texte du corps</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showButton">Bouton</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showFooter">Pied de carte</label>
+</div>
+<div>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-showShadow">Effet d'ombre</label>
+</div>
 <hr>
-<label for="cardCount">Nombre de cartes :</label>
-<input type="number" id="cardCount" value="3" min="1">
+<div class="number-input-container" id="number-input-71r30gb2d" data-number-input-id="number-input-71r30gb2d">
+    <button type="button" class="btn custom-button cvt-relief" data-change="-1">
+        <i class="bi bi-arrow-down-circle"></i>
+    </button>
+    <label>Taille : <span class="number-value-display">10</span></label>
+    <input type="number" class="number-input" id="cardCount" min="1" max="20" value="3" style="display: none;">
+    <button type="button" class="btn custom-button cvt-relief" data-change="1">
+        <i class="bi bi-arrow-up-circle"></i>
+    </button>
+</div>
+<label for="cardCount">Combien ?</label>
 <hr>
-<button class="btn custom-button custom-relief" data-type="card">Générer carte</button>
+<button class="btn custom-button cvt-relief cvt-warning" data-type="card">Générer</button>

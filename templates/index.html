@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeVite</title>
+    <title>RapidoCode</title>
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <script>
         (function () {
@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/draggable.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tabs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/selects.css') }}">
 
 </head>
 
@@ -51,7 +52,7 @@
                     <i class="bi bi-list"></i>
                 </button>
                 <a class="navbar-brand text-secondary" href="#">
-                    <span>CodeVite</span>
+                    <span>RapidoCode</span>
                 </a>
                 <div class="form-group cvt-settings-item">
                     <button id="cvtThemeToggle" class="cvt-btn-theme-toggle"></button>
@@ -63,8 +64,8 @@
     <div class="sidebar-fixed">
         <div class="sidebar-content">
             <a href="#content-generator" class="cvt-nav-item">
-                <i class="bi bi-code" aria-hidden="true"></i>
-                <p>Boostrap generator</p>
+                <i class="bi bi-plus-lg text-primary" aria-hidden="true"></i>
+                <p>Crée un composant</p>
             </a>
             <a href="#content-buttons" class="cvt-nav-item">
                 <i class="bi bi-toggle-on" aria-hidden="true"></i>
@@ -226,6 +227,8 @@
     <script src="{{ url_for('static', filename='js/draggable.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
     <script src="{{ url_for('static', filename='js/toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/collapse.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
 
     <script>
         const element = document.querySelector('.cvt-nav-item')

@@ -1,7 +1,22 @@
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+    color: transparent;
+    background-color: transparent;
+    border-color: transparent;
+}
+
 .custom-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-color);
     background-color: transparent;
     border-radius: var(--radius-1);
+    gap: 20px;
+    border: 2px solid transparent;
 }
 
 .custom-button:hover {
@@ -10,8 +25,37 @@
     border-radius: var(--radius-1);
 }
 
-.custom-relief {
+.cvt-relief {
     box-shadow: var(--effet-ombre);
 }
+.cvt-warning {
+    border-color: #997404; 
+}
 
+/* collapsible */
+.cvt-collapse {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s ease;
+}
 
+.cvt-collapse.cvt-show {
+    height: auto;
+}
+
+.cvt-chevron {
+    border: solid #3d3d3d;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform .25s ease-in-out;
+}
+
+.cvt-chevron.rotated {
+    transform: rotate(225deg);
+}
+
+.cvt-collapse-active {
+    background-color: var(--cvt-color-grey-light);
+}

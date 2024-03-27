@@ -102,6 +102,7 @@ main {
 
 .cvt-nav-item.active {
     background-color: var(--background-color);
+    box-shadow: var(--effet-ombre);
 }
 
 .cvt-nav-item i,

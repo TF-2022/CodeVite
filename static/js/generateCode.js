@@ -72,8 +72,62 @@ class BaseElement {
 
 // Classes create éléments 
 class ButtonElement extends BaseElement {
+    constructor(content, className) {
+        super();
+        this.content = content;
+        this.className = className;
+    }
+
     generateCode() {
-        return `<button id="${this.uniqueId}" class="${this.className}">${this.content}</button>`;
+        const selectTypeButton = document.getElementById('selectTypeButton').value;
+        const isSmallChecked = document.getElementById('checkbox-ryx3dh0q6') ? document.getElementById('checkbox-ryx3dh0q6').checked : false;
+        const isLargeChecked = document.getElementById('checkbox-iu8l4b6ui') ? document.getElementById('checkbox-iu8l4b6ui').checked : false;
+        let finalClassName = this.className;
+
+        if (selectTypeButton === 'outline') {
+            finalClassName = finalClassName.replace('btn-', 'btn-outline-');
+        }
+
+        if (isSmallChecked) {
+            finalClassName += " btn-sm";
+        } else if (isLargeChecked) {
+            finalClassName += " btn-lg";
+        }
+
+        finalClassName = finalClassName.trim().split(/\s+/).filter((v, i, a) => a.indexOf(v) === i).join(' ');
+
+        return `<button class="${finalClassName}" data-type="button">${this.content}</button>`;
+    }
+}
+
+class CollapseButtonElement extends BaseElement {
+    constructor(content, className) {
+        super();
+        this.content = content;
+        this.className = className;
+    }
+
+    generateCode() {
+        const numberInputContainer = document.getElementById('number-input-ks835gbv9');
+        const numberInput = numberInputContainer.querySelector('.number-input');
+        const collapseCount = parseInt(numberInput.value, 10) || 1;
+
+        let html = '';
+        for (let i = 0; i < collapseCount; i++) {
+            const collapseContentId = `collapseContent-${this.uniqueId}-${i}`;
+            html += `
+<button class="${this.className}" data-cvt-toggle="collapse" data-cvt-target="#${collapseContentId}" data-cvt-rotated="false">
+    ${this.content} ${i + 1} <span class="cvt-chevron"></span>
+</button>
+<div class="cvt-collapse" id="${collapseContentId}">
+    <div class="card card-body">
+        Contenu caché ${i + 1}
+    </div>
+</div>
+`;
+        }
+
+        return html;
     }
 }
 
@@ -152,7 +206,7 @@ class OffCanvasElement extends BaseElement {
         const buttonId = `button-${this.uniqueId}`;
         const positionClass = `cvt-offcanvas-${position}`;
 
-        const buttonHtml = `<button id="${buttonId}" class="btn btn-group-cvt cvt-offcanvas-toggler" data-offcanvas-target="#${offCanvasId}">
+        const buttonHtml = `<button id="${buttonId}" class="btn custom-button cvt-relief cvt-offcanvas-toggler" data-offcanvas-target="#${offCanvasId}">
   <i class="bi bi-gear"></i>
 </button>`;
 
@@ -211,6 +265,44 @@ ${linksHtml}  </div>
     }
 }
 
+class SelectElement extends BaseElement {
+    constructor(type, className, content) {
+        super(type, className, content);
+        this.includedOptions = document.getElementById('checkbox-ogqqa4w2u') ? document.getElementById('checkbox-ogqqa4w2u').checked : true;
+        this.optionsDefault = document.getElementById('checkbox-e6ysu3392') ? document.getElementById('checkbox-e6ysu3392').checked : false;
+        this.disableValue = document.getElementById('checkbox-hhpb72uk4') ? document.getElementById('checkbox-hhpb72uk4').checked : true;
+        this.optionsInput = document.getElementById('input-top2szt9f') ? document.getElementById('input-top2szt9f').value : '';
+    }
+
+    generateCode() {
+        const selectId = `select-${this.uniqueId}`;
+        let optionsHtml = '';
+
+        if (this.includedOptions) {
+            optionsHtml += `        <option value="0" disabled selected>Actif</option>\n`;
+        }
+
+        if (this.optionsDefault) {
+            if (this.optionsInput.trim()) {
+                const optionNames = this.optionsInput.split(/[\s,]+/).filter(name => name !== '');
+                optionNames.forEach((option, index) => {
+                    optionsHtml += `        <option value="${index + 1}">${option}</option>\n`;
+                });
+            } else {
+                optionsHtml += `        <option value="1">Option_1</option>\n`;
+                optionsHtml += `        <option value="2">Option_2</option>\n`;
+                optionsHtml += `        <option value="3">Option_3</option>\n`;
+            }
+        }
+
+        return `<div class="cvt-select">\n` +
+               `    <select id="${selectId}" ${this.disableValue ? 'disabled' : ''}>\n` +
+               optionsHtml +
+               `    </select>\n` +
+               `</div>`;
+    }
+}
+
 class AccordionsElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
@@ -259,78 +351,53 @@ class CardsElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
         this.cardCountInput = document.getElementById('cardCount');
-        this.cardTypeSelect = document.getElementById('typeCards');
+        this.showHeader = document.getElementById('checkbox-showHeader').checked;
+        this.showTitle = document.getElementById('checkbox-showTitle').checked;
+        this.showImage = document.getElementById('checkbox-showImage').checked;
+        this.showBodyText = document.getElementById('checkbox-showBodyText').checked;
+        this.showButton = document.getElementById('checkbox-showButton').checked;
+        this.showFooter = document.getElementById('checkbox-showFooter').checked;
+        this.showShadow = document.getElementById('checkbox-showShadow').checked;
         this.cardCount = parseInt(this.cardCountInput.value, 10) || 3;
-        this.cardType = this.cardTypeSelect.value;
 
         this.cardCountInput.addEventListener('change', this.handleCardCountChange.bind(this));
-        this.cardTypeSelect.addEventListener('change', this.handleCardTypeChange.bind(this));
     }
 
     handleCardCountChange() {
         this.cardCount = parseInt(this.cardCountInput.value, 10) || 3;
     }
 
-    handleCardTypeChange() {
-        this.cardType = this.cardTypeSelect.value;
-    }
-
-    generateNormalCard(i) {
-        const cardId = `card-normal-${this.uniqueId}-${i}`;
-        return `<div class="card" id="${cardId}">
-        <img src="path/to/image" class="card-img-top" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title ${i}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>`;
-    }
-
-    generateAllCard(i) {
-        const cardId = `card-all-${this.uniqueId}-${i}`;
-        return `<div class="card card-custom-border" id="${cardId}">
-        <div class="card-header">Header ${i}</div>
-        <div class="card-body">
-            <h5 class="card-title">All Card title ${i}</h5>
-            <p class="card-text">Text demonstrating a complete card with header, body, and footer.</p>
-        </div>
-        <div class="card-footer">Footer ${i}</div>
-    </div>`;
-    }
-
-    generateTitleColorCard(i) {
-        const cardId = `card-title-color-${this.uniqueId}-${i}`;
-        return `<div class="card" id="${cardId}">
-        <div class="card-body">
-            <h5 class="card-title">Color Title Card ${i}</h5>
-            <p class="card-text">Some quick example text to build on the colored card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>`;
-    }
-
-    generateShadowCard(i) {
-        const cardId = `card-shadow-${this.uniqueId}-${i}`;
-        return `<div class="cvt-card" id="${cardId}">
-        <p class="card-text">Some quick example text to build on the colored card title and make up the bulk of the card's content.</p>
-    </div>`;
-    }
-
-
     generateCard(i) {
-        switch (this.cardType) {
-            case "normal":
-                return this.generateNormalCard(i);
-            case "shadow":
-                return this.generateShadowCard(i);
-            case "all-card":
-                return this.generateAllCard(i);
-            case "title-color":
-                return this.generateTitleColorCard(i);
-            default:
-                return '';
+        const imageHtml = this.showImage ? `<img src="path/to/image" class="card-img-top" alt="Card image cap">` : '';
+        const bodyTextHtml = this.showBodyText ? `<p class="card-text">Ajouter du contenu ici.</p>` : '';
+        const buttonHtml = this.showButton ? `<a href="#" class="btn btn-primary">Go somewhere</a>` : '';
+        const footerHtml = this.showFooter ? `<div class="card-footer">Footer ${i}</div>` : '';
+        const cardStyle = this.showShadow ? 'style="box-shadow: var(--effet-ombre); border:none;"' : '';
+
+        let headerHtml = '';
+        let bodyTitleHtml = '';
+
+        if (this.showHeader) {
+            if (this.showTitle) {
+                headerHtml = `<div class="card-header"><h5 class="card-title">Card title ${i}</h5></div>`;
+            } else {
+                headerHtml = `<div class="card-header"></div>`;
+            }
+        } else if (this.showTitle) {
+            bodyTitleHtml = `<h5 class="card-title">Card title ${i}</h5>`;
         }
+
+        return `
+<div class="card" id="card-${this.uniqueId}-${i}" ${cardStyle}>
+    ${headerHtml}
+    ${imageHtml}
+    <div class="card-body">
+        ${bodyTitleHtml}
+        ${bodyTextHtml}
+        ${buttonHtml}
+    </div>
+    ${footerHtml}
+</div>`;
     }
 
     generateCode() {
@@ -340,8 +407,8 @@ class CardsElement extends BaseElement {
         }
         return cardsHtml.trim();
     }
-
 }
+
 
 class InputElement extends BaseElement {
     generateCode() {
@@ -350,6 +417,24 @@ class InputElement extends BaseElement {
 <div class="cvt-form-group">
   <input type="search" id="${inputId}" aria-describedby="inputGroup-sizing-sm" autocomplete="off">
   <label for="${inputId}">Recherche...</label>
+</div>
+        `;
+    }
+}
+
+class NumberInputElement extends BaseElement {
+    generateCode() {
+        const numberInputContainerId = `number-input-${this.uniqueId}`;
+        return `
+<div class="number-input-container" id="${numberInputContainerId}" data-number-input-id="${numberInputContainerId}">
+    <button type="button" class="btn custom-button cvt-relief" data-change="-1">
+        <i class="bi bi-arrow-down-circle"></i>
+    </button>
+    <label>Taille : <span class="number-value-display">10</span></label>
+    <input type="number" class="number-input" min="1" max="20" value="10" style="display: none;">
+    <button type="button" class="btn custom-button cvt-relief" data-change="1">
+        <i class="bi bi-arrow-up-circle"></i>
+    </button>
 </div>
         `;
     }
@@ -593,7 +678,7 @@ class ChartElement extends BaseElement {
             case 'bar':
             case 'horizontalBar':
                 for (let i = 0; i < 5; i++) {
-                    randomData.push(Math.floor(Math.random() * 100)); 
+                    randomData.push(Math.floor(Math.random() * 100));
                 }
                 break;
             case 'scatter':
@@ -608,7 +693,7 @@ class ChartElement extends BaseElement {
                 break;
             case 'candlestick':
                 for (let i = 0; i < 5; i++) {
-                    randomData.push([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]); 
+                    randomData.push([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]);
                 }
                 break;
             default:
@@ -678,6 +763,7 @@ const elementClasses = {
     'subsubsubsubtitle': TitleElement,
     'subsubsubsubsubtitle': TitleElement,
     'input': InputElement,
+    'input-number': NumberInputElement,
     'modal': ModalElement,
     'config-panel': ModalElement,
     'off-canvas': OffCanvasElement,
@@ -690,6 +776,8 @@ const elementClasses = {
     'tabs-nav': TabsElement,
     'table': TablesElement,
     'chart': ChartElement,
+    'button-collapse': CollapseButtonElement,
+    'select': SelectElement,
 };
 
 function createElement(type, className, content) {
@@ -743,3 +831,46 @@ function activateCustomComponents() {
 
 }
 
+
+
+class ButtonUIManager {
+    constructor() {
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        document.getElementById('selectTypeButton').addEventListener('change', this.handleStyleChange.bind(this));
+
+        const checkboxSmall = document.getElementById('checkbox-ryx3dh0q6');
+        const checkboxLarge = document.getElementById('checkbox-iu8l4b6ui');
+
+        checkboxSmall.addEventListener('change', () => this.handleSizeChange(checkboxSmall, checkboxLarge));
+        checkboxLarge.addEventListener('change', () => this.handleSizeChange(checkboxLarge, checkboxSmall));
+    }
+
+    handleStyleChange(event) {
+        const selectValue = event.target.value;
+        const buttons = document.querySelectorAll('#buttonContainer button[data-type="button"]');
+
+        buttons.forEach(button => {
+            let currentClasses = button.className.split(' ');
+
+            const isOutline = currentClasses.some(cls => cls.startsWith('btn-outline-'));
+
+            if (selectValue === 'outline' && !isOutline) {
+                button.className = button.className.replace(/btn-(?!link\b)/g, 'btn-outline-');
+            } else if (selectValue === 'simple' && isOutline) {
+                button.className = button.className.replace(/btn-outline-/g, 'btn-');
+            }
+        });
+    }
+
+    handleSizeChange(checkedCheckbox, otherCheckbox) {
+        if (checkedCheckbox.checked) {
+            otherCheckbox.checked = false;
+        }
+    }
+}
+
+// Initialisation
+new ButtonUIManager();

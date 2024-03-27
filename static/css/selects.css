@@ -1,0 +1,91 @@
+.cvt-select {
+    position: relative;
+    font-family: Arial;
+    width: 100%;
+}
+
+.cvt-select::before {
+    content: "Actif";
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background-color: var(--background-color);
+    padding: 0 5px;
+    font-size: 0.75rem;
+    color: #aaa;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.cvt-select select {
+    display: none;
+}
+
+.select-cvt-selected::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(0, -50%) rotate(45deg);
+    border: solid var(--text-color);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.select-cvt-selected.select-cvt-arrow-active::after {
+    transform: translate(0, -50%) rotate(-135deg);
+}
+
+.select-cvt-selected {
+    color: var(--text-color);
+    background-color: transparent;
+    border-radius: var(--radius-1);
+    border: 1px solid var(--cvt-color-grey-light);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.select-cvt-selected:focus {
+    outline: none;
+    border: 1px solid var(--focus-border-color);
+    box-shadow: 0 0 4px var(--focus-shadow-color);
+}
+
+.select-cvt-items div {
+    color: var(--text-color);
+    background-color: transparent;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.select-cvt-items {
+    position: absolute;
+    background-color: var(--background-color);
+    border-radius: var(--radius-1);
+    border: 1px solid var(--cvt-color-grey-light);
+    top: 110%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    display: none;
+}
+
+.select-cvt-show {
+    display: block;
+    transform: scaleY(1);
+}
+
+.select-cvt-hide {
+    display: none;
+}
+
+.select-cvt-items div:hover,
+.cvt-same-as-selected {
+    background-color: var(--secondary-background-color);
+}
