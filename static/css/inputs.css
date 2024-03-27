@@ -7,7 +7,7 @@
 
 .cvt-form-group:focus-within {
     box-shadow: 0 0 0 2px #3874ff3d;
-    border-radius: var(--radius-2);
+    border-radius: var(--radius-1);
     border-bottom: 2px solid transparent;
 }
 

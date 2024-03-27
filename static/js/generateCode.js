@@ -123,9 +123,9 @@ class ModalElement extends BaseElement {
 </button>
 <div id="${modalId}" class="cvt-modal" tabindex="-1" aria-hidden="true">
   <div class="cvt-modal-content" ${modalStyle}>
-    <div class="cvt-modal-header header-circle p-2">
-      <h5 class="cvt-title py-2" id="${modalId}-label">${this.content}</h5>
-      <span class="cvt-close btn btn-close bg-light py-2"></span>
+    <div class="cvt-modal-header header-circle">
+      <h5 class="cvt-title" id="${modalId}-label">${this.content}</h5>
+      <span class="cvt-close btn btn-close bg-light"></span>
     </div>
     <div class="cvt-modal-body text-custom-cvt">
       <!-- Espace réservé pour le contenu -->
@@ -180,21 +180,33 @@ class DropdownElement extends BaseElement {
         const menuId = `dropdown-menu-${this.uniqueId}`;
 
         const autoClose = document.getElementById('autoCloseCheckbox') ? document.getElementById('autoCloseCheckbox').checked : true;
-        const includeDefaultLinks = document.getElementById('includeDefaultLinksCheckbox') ? document.getElementById('includeDefaultLinksCheckbox').checked : true;
         const autoCloseAttribute = autoClose ? 'true' : 'false';
+        const dataValueIncluded = document.getElementById('checkbox-a2azhe3q5') ? document.getElementById('checkbox-a2azhe3q5').checked : false;
+        const includeLinks = document.getElementById('includeDefaultLinksCheckbox') ? document.getElementById('includeDefaultLinksCheckbox').checked : false;
+        const onClickElementIdIncluded = document.getElementById('checkbox-2pwh3ggjq') ? document.getElementById('checkbox-2pwh3ggjq').checked : false;
+        const mobileMenu = document.getElementById('checkbox-4pnloidkd') ? document.getElementById('checkbox-4pnloidkd').checked : false;
+        const linkNamesInputValue = document.getElementById('searchInputTable-gji6hjwaw') ? document.getElementById('searchInputTable-gji6hjwaw').value : '';
 
+        const menuClass = mobileMenu ? " d-md-none" : "";
         let linksHtml = '';
-        if (includeDefaultLinks) {
-            linksHtml = `<a class="cvt-dropdown-item" href="#">Action</a>\n    <a class="cvt-dropdown-item" href="#">Another action</a>\n    <a class="cvt-dropdown-item" href="#">Something else here</a>`;
+        if (includeLinks) {
+            let linkNames = linkNamesInputValue.split(',').map(name => name.trim()).filter(name => name !== '');
+            if (linkNames.length === 0) {
+                linkNames = ['Link_1', 'Link_2', 'Link_3'];
+            }
+
+            linksHtml = linkNames.map((linkName, index) => {
+                const dataValueAttr = dataValueIncluded ? ` data-value="${linkName}"` : '';
+                const targetElementId = `elementId${index + 1}`;
+                const onClickAction = onClickElementIdIncluded ? ` onclick="document.getElementById('${targetElementId}').click(); return false;"` : '';
+                return `    <a class="cvt-dropdown-item"${dataValueAttr}${onClickAction} href="#">${linkName}</a>\n`;
+            }).join('');
         }
 
-        return `<div class="cvt-dropdown" id="${dropdownId}">
-  <button class="btn cvt-dropdown-toggle" type="button">
-    ${this.content}
-  </button>
+        return `<div class="cvt-dropdown${menuClass}" id="${dropdownId}">
+  <button class="btn cvt-dropdown-toggle" type="button">${this.content}</button>
   <div class="cvt-dropdown-menu" id="${menuId}" data-cvt-auto-close="${autoCloseAttribute}">
-    ${linksHtml}
-  </div>
+${linksHtml}  </div>
 </div>`;
     }
 }
@@ -335,7 +347,7 @@ class InputElement extends BaseElement {
     generateCode() {
         const inputId = `searchInputTable-${this.uniqueId}`;
         return `
-<div class="cvt-form-group searchCotTable">
+<div class="cvt-form-group">
   <input type="search" id="${inputId}" aria-describedby="inputGroup-sizing-sm" autocomplete="off">
   <label for="${inputId}">Recherche...</label>
 </div>
@@ -513,7 +525,7 @@ class TablesElement extends BaseElement {
         const tableId = `table-${this.uniqueId}`;
         const modalId = `modal-${this.uniqueId}`;
         let tableHtml = `<div class="table-responsive">\n`;
-        tableHtml += `  <table id="${tableId}" class="table">\n`;
+        tableHtml += `  <table id="${tableId}" class="table table-hover table-striped table-header-cvt">\n`;
         tableHtml += `    <thead>\n`;
         tableHtml += `      <tr>\n`;
 
@@ -541,9 +553,9 @@ class TablesElement extends BaseElement {
         if (this.isClickable) {
             tableHtml += `<div id="${modalId}" class="cvt-modal" tabindex="-1" aria-hidden="true" style="display:none;">\n`;
             tableHtml += `  <div class="cvt-modal-content">\n`;
-            tableHtml += `    <div class="cvt-modal-header header-circle p-2">\n`;
-            tableHtml += `      <h5 class="cvt-title py-2">Contenu de la Cellule</h5>\n`;
-            tableHtml += `      <span class="cvt-close btn btn-close bg-light py-2" onclick="closeModal('${modalId}')"></span>\n`;
+            tableHtml += `    <div class="cvt-modal-header">\n`;
+            tableHtml += `      <h5 class="cvt-title">Contenu de la Cellule</h5>\n`;
+            tableHtml += `      <span class="cvt-close btn btn-close bg-light" onclick="closeModal('${modalId}')"></span>\n`;
             tableHtml += `    </div>\n`;
             tableHtml += `    <div class="cvt-modal-body text-custom-cvt" id="${modalId}-body">\n`;
             tableHtml += `      <!-- Le contenu de la cellule sera inséré ici -->\n`;
@@ -566,10 +578,93 @@ class TablesElement extends BaseElement {
     }
 }
 
+class ChartElement extends BaseElement {
+    constructor(type, className, content) {
+        super(type, className, content);
+        this.chartType = document.getElementById('select-chartType').value;
+        this.seriesCount = document.getElementById('seriesCount').value;
+    }
 
+    generateRandomData(chartType) {
+        const randomData = [];
 
+        switch (chartType) {
+            case 'line':
+            case 'bar':
+            case 'horizontalBar':
+                for (let i = 0; i < 5; i++) {
+                    randomData.push(Math.floor(Math.random() * 100)); 
+                }
+                break;
+            case 'scatter':
+                for (let i = 0; i < 5; i++) {
+                    randomData.push([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]);
+                }
+                break;
+            case 'pie':
+                for (let i = 0; i < 3; i++) {
+                    randomData.push({ value: Math.floor(Math.random() * 500), name: `Option ${String.fromCharCode(65 + i)}` });
+                }
+                break;
+            case 'candlestick':
+                for (let i = 0; i < 5; i++) {
+                    randomData.push([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]); 
+                }
+                break;
+            default:
+                break;
+        }
 
+        return randomData;
+    }
 
+    generateCode() {
+        const chartContainerId = `cvt-chart-container-${this.uniqueId}`;
+        let xAxisType = 'category';
+        let yAxisType = 'value';
+
+        let seriesCode = '';
+        let legendData = [];
+
+        for (let i = 0; i < this.seriesCount; i++) {
+            const seriesName = `Série ${i + 1}`;
+            legendData.push(seriesName);
+
+            const seriesData = this.generateRandomData(this.chartType);
+
+            seriesCode += `
+            {
+                data: ${JSON.stringify(seriesData)},
+                type: '${this.chartType === 'horizontalBar' ? 'bar' : this.chartType}',
+                name: '${seriesName}'
+            },`;
+        }
+
+        seriesCode = seriesCode.slice(0, -1);
+
+        return `
+<div id="${chartContainerId}" style="width: 100%;height: 400px;margin: 50px auto;"></div>
+<script>
+    var chartContainer = document.getElementById('${chartContainerId}');
+    var chart = initEchartsCvtSetup('${chartContainerId}', {
+        type: '${this.chartType}',
+        xAxis: {
+            type: '${xAxisType}',
+            data: ${JSON.stringify(['A', 'B', 'C', 'D', 'E'])}
+        },
+        yAxis: {
+            type: '${yAxisType}'
+        },
+        legend: {
+            data: ${JSON.stringify(legendData)}
+        },
+        series: [${seriesCode}],
+        animation: true
+    });
+</script>
+        `;
+    }
+}
 
 
 // Fonction factory pour créer des éléments
@@ -594,6 +689,7 @@ const elementClasses = {
     'drag-drop': DragAndDropElement,
     'tabs-nav': TabsElement,
     'table': TablesElement,
+    'chart': ChartElement,
 };
 
 function createElement(type, className, content) {
@@ -646,5 +742,4 @@ function activateCustomComponents() {
     });
 
 }
-
 

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error('Element not found for contentId:', currentPath);
         }
     } else {
-        document.getElementById('content-home').style.display = 'block';
+        document.getElementById('content-generator').style.display = 'block';
     }
 
     navItems.forEach(item => {

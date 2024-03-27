@@ -4,6 +4,7 @@ import os
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or os.urandom(24)
+app.config['STATIC_FOLDER'] = '../static'
 
 @app.route('/')
 def index():
