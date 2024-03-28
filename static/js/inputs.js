@@ -80,3 +80,4 @@ class setupNumberInput {
 }
 
 document.querySelectorAll('.number-input-container').forEach(container => { new setupNumberInput(container);});
+

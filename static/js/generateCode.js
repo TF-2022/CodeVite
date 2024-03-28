@@ -268,38 +268,49 @@ ${linksHtml}  </div>
 class SelectElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
-        this.includedOptions = document.getElementById('checkbox-ogqqa4w2u') ? document.getElementById('checkbox-ogqqa4w2u').checked : true;
+        this.includedLabel = document.getElementById('checkbox-3mshoosxmt9') ? document.getElementById('checkbox-3mshoosxmt9').checked : true;
+        this.includedPlaceHolder = document.getElementById('checkbox-ogqqa4w2u') ? document.getElementById('checkbox-ogqqa4w2u').checked : true;
         this.optionsDefault = document.getElementById('checkbox-e6ysu3392') ? document.getElementById('checkbox-e6ysu3392').checked : false;
-        this.disableValue = document.getElementById('checkbox-hhpb72uk4') ? document.getElementById('checkbox-hhpb72uk4').checked : true;
+        this.incluedInputSearch = document.getElementById('checkbox-bupcolb8o') ? document.getElementById('checkbox-bupcolb8o').checked : true;
+        this.fisrtOptionSelected = document.getElementById('checkbox-a4w0qzvr0') ? document.getElementById('checkbox-a4w0qzvr0').checked : true;
         this.optionsInput = document.getElementById('input-top2szt9f') ? document.getElementById('input-top2szt9f').value : '';
+        this.labelContent = document.getElementById('input-3mshoomt9') && document.getElementById('input-3mshoomt9').value.trim() !== '' ? document.getElementById('input-3mshoomt9').value.trim() : 'Label par défaut';
+        this.placeholderContent = document.getElementById('input-q4dd3led2') && document.getElementById('input-q4dd3led2').value.trim() !== '' ? document.getElementById('input-q4dd3led2').value.trim() : 'Sélectionnez une option';
     }
 
     generateCode() {
         const selectId = `select-${this.uniqueId}`;
-        let optionsHtml = '';
+        let selectAttributes = `data-cvt-input-select="${this.incluedInputSearch ? 'true' : 'false'}"`;
+        let placeholderOption = this.includedPlaceHolder && this.placeholderContent ?
+            `        <option value="0" disabled selected>${this.placeholderContent}</option>\n` :
+            `        <option disabled></option>\n`;
 
-        if (this.includedOptions) {
-            optionsHtml += `        <option value="0" disabled selected>Actif</option>\n`;
+        let optionsHtml = this.generateOptions(!this.includedPlaceHolder);
+
+        if (this.includedLabel) {
+            selectAttributes += ` data-cvt-label-border="${this.labelContent}"`;
         }
+
+        return `<!-- Start select ${selectId} -->\n<div class="cvt-select">\n    <select id="${selectId}" ${selectAttributes}>\n${placeholderOption}${optionsHtml}    </select>\n</div>\n<!-- End select ${selectId} -->`;
+    }
+
+    generateOptions(isFirstOptionSelected) {
+        let optionsHtml = '';
+        let isSelectedApplied = !isFirstOptionSelected;
 
         if (this.optionsDefault) {
-            if (this.optionsInput.trim()) {
-                const optionNames = this.optionsInput.split(/[\s,]+/).filter(name => name !== '');
-                optionNames.forEach((option, index) => {
-                    optionsHtml += `        <option value="${index + 1}">${option}</option>\n`;
-                });
-            } else {
-                optionsHtml += `        <option value="1">Option_1</option>\n`;
-                optionsHtml += `        <option value="2">Option_2</option>\n`;
-                optionsHtml += `        <option value="3">Option_3</option>\n`;
-            }
+            const optionValues = this.optionsInput.trim() ?
+                this.optionsInput.split(/[\s,]+/).filter(name => name !== '') :
+                ['Option_1', 'Option_2', 'Option_3'];
+
+            optionValues.forEach((option, index) => {
+                const selectedAttribute = isSelectedApplied ? '' : ' selected';
+                optionsHtml += `        <option value="${index + 1}"${selectedAttribute}>${option}</option>\n`;
+                isSelectedApplied = true;
+            });
         }
 
-        return `<div class="cvt-select">\n` +
-               `    <select id="${selectId}" ${this.disableValue ? 'disabled' : ''}>\n` +
-               optionsHtml +
-               `    </select>\n` +
-               `</div>`;
+        return optionsHtml;
     }
 }
 
@@ -409,7 +420,6 @@ class CardsElement extends BaseElement {
     }
 }
 
-
 class InputElement extends BaseElement {
     generateCode() {
         const inputId = `searchInputTable-${this.uniqueId}`;
@@ -518,7 +528,32 @@ class CheckboxElement extends BaseElement {
     generateCode() {
         const checkboxId = `checkbox-${this.uniqueId}`;
         return `
-<label class="checkbox-cvt"><input type="checkbox" id="${checkboxId}" ${this.isChecked ? 'checked' : ''}>${this.content}</label>`;
+<label class="checkbox-cvt"><input type="checkbox" id="${checkboxId}" ${this.isChecked ? 'checked' : ''}>Name_label</label>`;
+    }
+}
+
+class CheckboxCollapseElement extends BaseElement {
+    constructor(type, className, content, isChecked = false) {
+        super(type, className, content);
+        this.isChecked = isChecked;
+    }
+
+    generateCode() {
+        const checkboxId = `checkbox-${this.uniqueId}`;
+        const inputGroupId = `searchInputTable-${this.uniqueId}`;
+
+        const checkboxHtml = `
+<label class="checkbox-cvt">
+  <input type="checkbox" id="${checkboxId}" data-cvt-checkbox-collapse="${this.uniqueId}" ${this.isChecked ? 'checked' : ''}>Name_label
+</label>`;
+
+        const inputGroupHtml = `
+<div class="cvt-form-group" data-cvt-input-group="${this.uniqueId}" style="display: none;">
+  <input type="search" id="${inputGroupId}" aria-describedby="inputGroup-sizing-sm" autocomplete="off">
+  <label for="${inputGroupId}">Recherche...</label>
+</div>`;
+
+        return checkboxHtml + inputGroupHtml;
     }
 }
 
@@ -751,6 +786,78 @@ class ChartElement extends BaseElement {
     }
 }
 
+class BootstrapGridElement extends BaseElement {
+    constructor(type, className, content) {
+        super(type, className, content);
+        this.useContainer = document.getElementById('checkbox-useContainer').checked;
+        this.useRow = document.getElementById('checkbox-useRow').checked;
+        this.breakpointPrefix = document.getElementById('colSizeSelect').value;
+        this.colConfig = document.getElementById('colConfig').value;
+        this.adaptationMobile = document.getElementById('checkbox-h7al54lyf').checked;
+        this.centerContent = document.getElementById('checkbox-kgq7tnp4w').checked;
+        this.spaceBetween = document.getElementById('checkbox-5fj65a36z').checked;
+        this.alignItemsCenter = document.getElementById('checkbox-2dh39quyo').checked;
+
+    }
+
+    generateGrid() {
+        let gridHtml = this.useContainer ? '<div class="container">\n' : '';
+        let rowClasses = "row"; // Classe par défaut pour les lignes
+
+        // Ajouter les classes Flex selon les cases cochées
+        if (this.centerContent) {
+            rowClasses += " d-flex justify-content-center";
+        } else if (this.spaceBetween) {
+            rowClasses += " d-flex justify-content-between";
+        }
+        if (this.alignItemsCenter) {
+            rowClasses += " align-items-center";
+        }
+
+        gridHtml += this.useRow ? `  <div class="${rowClasses}">\n` : '';
+
+        const colConfigs = this.colConfig.split('-');
+        colConfigs.forEach(config => {
+            const colSize = parseInt(config, 10);
+            const colClasses = this.generateBreakpointClasses(colSize);
+            gridHtml += `    <div class="${colClasses} mb-4">Contenu</div>\n`;
+        });
+
+        gridHtml += this.useRow ? '  </div>\n' : '';
+        gridHtml += this.useContainer ? '</div>\n' : '';
+
+        return gridHtml;
+    }
+    
+    generateBreakpointClasses(colSize) {
+        if (!this.adaptationMobile) {
+            return `${this.breakpointPrefix}${colSize}`;
+        }
+
+        const breakpointsOrder = ['col-', 'col-sm-', 'col-md-', 'col-lg-', 'col-xl-', 'col-xxl-'];
+        const breakpointIndex = breakpointsOrder.findIndex(breakpoint => this.breakpointPrefix === breakpoint);
+        let classes = '';
+    
+        for (let i = 0; i < breakpointIndex; i++) {
+            let adjustedSize = Math.min(colSize + 2, 12);
+            classes += `${breakpointsOrder[i]}${adjustedSize} `;
+        }
+    
+        classes += `${this.breakpointPrefix}${colSize} `;
+    
+        for (let i = breakpointIndex + 1; i < breakpointsOrder.length; i++) {
+            classes += `${breakpointsOrder[i]}${colSize} `;
+        }
+    
+        return classes.trim();
+    }
+
+    generateCode() {
+        return this.generateGrid();
+    }
+}
+
+
 
 // Fonction factory pour créer des éléments
 const elementClasses = {
@@ -771,6 +878,7 @@ const elementClasses = {
     'accordion': AccordionsElement,
     'toggle-switch': ToggleSwitchElement,
     'checkbox': CheckboxElement,
+    'checkbox-collapse': CheckboxCollapseElement,
     'card': CardsElement,
     'drag-drop': DragAndDropElement,
     'tabs-nav': TabsElement,
@@ -778,6 +886,7 @@ const elementClasses = {
     'chart': ChartElement,
     'button-collapse': CollapseButtonElement,
     'select': SelectElement,
+    'grid': BootstrapGridElement,
 };
 
 function createElement(type, className, content) {

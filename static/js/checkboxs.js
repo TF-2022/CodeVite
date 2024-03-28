@@ -16,3 +16,26 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+  
+// radio collapse
+document.addEventListener("DOMContentLoaded", function() {
+  var checkboxes = document.querySelectorAll('input[type="checkbox"][data-cvt-checkbox-collapse]');
+
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+      var targetId = checkbox.getAttribute("data-cvt-checkbox-collapse");
+      var inputGroup = document.querySelector(`div[data-cvt-input-group="${targetId}"]`);
+      
+      if (checkbox.checked) {
+        inputGroup.style.display = "";
+      } else {
+        inputGroup.style.display = "none";
+        var searchInput = inputGroup.querySelector('input[type="search"]');
+        if (searchInput) {
+          searchInput.value = "";
+        }
+      }
+    });
+  });
+});

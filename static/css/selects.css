@@ -3,9 +3,12 @@
     font-family: Arial;
     width: 100%;
 }
+.cvt-select:focus-within::before {
+    color: var(--focus-shadow-color);
+}
 
 .cvt-select::before {
-    content: "Actif";
+    content: var(--label-content, "");
     position: absolute;
     top: -10px;
     left: 12px;
