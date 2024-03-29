@@ -39,12 +39,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
     document.getElementById('resetEditor').addEventListener('click', function () {
         editor.setValue('');
     });
 
     document.getElementById('copyButton').addEventListener('click', copyToClipboard);
+
+    editor.session.on('change', function () {
+        displayGeneratedContent();
+    });
 });
+
+function displayGeneratedContent() {
+    var editorContent = ace.edit("editor").getValue();
+    var displayContainer = document.getElementById('previewCodeResult');
+    displayContainer.innerHTML = editorContent;
+    activateCustomComponents();
+}
+
 
 function copyToClipboard() {
     const code = ace.edit("editor").getValue();
@@ -71,32 +84,45 @@ class BaseElement {
 }
 
 // Classes create éléments 
-class ButtonElement extends BaseElement {
-    constructor(content, className) {
+class ButtonBoostrapElement extends BaseElement {
+    constructor(content) {
         super();
         this.content = content;
-        this.className = className;
     }
 
     generateCode() {
-        const selectTypeButton = document.getElementById('selectTypeButton').value;
-        const isSmallChecked = document.getElementById('checkbox-ryx3dh0q6') ? document.getElementById('checkbox-ryx3dh0q6').checked : false;
-        const isLargeChecked = document.getElementById('checkbox-iu8l4b6ui') ? document.getElementById('checkbox-iu8l4b6ui').checked : false;
-        let finalClassName = this.className;
+        const isButtonBootstrapChecked = document.getElementById('checkbox-b8zonwxpi')?.checked ?? true;
+        if (!isButtonBootstrapChecked) return '';
 
-        if (selectTypeButton === 'outline') {
-            finalClassName = finalClassName.replace('btn-', 'btn-outline-');
+        const isOutlineChecked = document.getElementById('checkbox-nugwde2vb-2')?.checked ?? false;
+        const baseClass = isOutlineChecked ? 'btn-outline-primary' : 'btn-primary';
+        let buttonClasses = ['btn', baseClass];
+
+        const sizeClass = document.getElementById('checkbox-52skcrpn6')?.checked ? (
+            document.getElementById('checkbox-ryx3dh0q6')?.checked ? 'btn-sm' :
+                document.getElementById('checkbox-iu8l4b6ui')?.checked ? 'btn-lg' :
+                    ''
+        ) : '';
+
+        if (sizeClass) buttonClasses.push(sizeClass);
+
+        const colorClass = document.querySelector('input[type="radio"][name="couleur"]:checked')?.value;
+        if (colorClass && colorClass !== 'primary') {
+            buttonClasses[1] = isOutlineChecked ? `btn-outline-${colorClass}` : `btn-${colorClass}`;
         }
 
-        if (isSmallChecked) {
-            finalClassName += " btn-sm";
-        } else if (isLargeChecked) {
-            finalClassName += " btn-lg";
-        }
+        return `<button class="${buttonClasses.join(' ')}">${this.content}</button>`;
+    }
+}
+class ButtonCvtElement extends BaseElement {
+    generateCode() {
+        const isOutlineChecked = document.getElementById('checkbox-pt711drxn')?.checked ?? false;
+        let htmlCode = '';
 
-        finalClassName = finalClassName.trim().split(/\s+/).filter((v, i, a) => a.indexOf(v) === i).join(' ');
+        htmlCode += `<button class="btn custom-button cvt-relief cvt-warning" data-type="button">Relief</button>
+        `;
 
-        return `<button class="${finalClassName}" data-type="button">${this.content}</button>`;
+        return htmlCode;
     }
 }
 
@@ -166,14 +192,19 @@ class TitleElement extends BaseElement {
 
 class ModalElement extends BaseElement {
     generateCode() {
+        const modalChecked = document.getElementById('checkbox-0cg1k960g') ? document.getElementById('checkbox-0cg1k960g').checked : true;
         const modalId = `modal-${this.uniqueId.replace(/[^a-zA-Z0-9-_]/g, '')}`;
         const buttonId = `button-${this.uniqueId.replace(/[^a-zA-Z0-9-_]/g, '')}`;
-        const isConfigPanel = this.content.includes("Panneau de Configuration");
-        const modalStyle = isConfigPanel ? 'style="height: 80%; width: 80%; max-height: 80%; max-width: 80%;"' : '';
+        const modalStyleConfigPanel = document.getElementById('checkbox-29pm1r3v8') ? document.getElementById('checkbox-29pm1r3v8').checked : true;
+        const modalStyle = modalStyleConfigPanel ? 'style="height: 80%; width: 80%; max-height: 80%; max-width: 80%;"' : '';
+
+        if (!modalChecked) {
+            return '';
+        }
 
         return `
 <button id="${buttonId}" class="btn custom-button" data-toggle="cvt-modal" data-target="#${modalId}">
-    ${this.content}
+    Button
 </button>
 <div id="${modalId}" class="cvt-modal" tabindex="-1" aria-hidden="true">
   <div class="cvt-modal-content" ${modalStyle}>
@@ -233,14 +264,21 @@ class DropdownElement extends BaseElement {
         const dropdownId = `dropdown-${this.uniqueId}`;
         const menuId = `dropdown-menu-${this.uniqueId}`;
 
+        const dropdownChecked = document.getElementById('checkbox-hac6jof2u') ? document.getElementById('checkbox-hac6jof2u').checked : true;
         const autoClose = document.getElementById('autoCloseCheckbox') ? document.getElementById('autoCloseCheckbox').checked : true;
         const autoCloseAttribute = autoClose ? 'true' : 'false';
         const dataValueIncluded = document.getElementById('checkbox-a2azhe3q5') ? document.getElementById('checkbox-a2azhe3q5').checked : false;
         const includeLinks = document.getElementById('includeDefaultLinksCheckbox') ? document.getElementById('includeDefaultLinksCheckbox').checked : false;
         const onClickElementIdIncluded = document.getElementById('checkbox-2pwh3ggjq') ? document.getElementById('checkbox-2pwh3ggjq').checked : false;
         const mobileMenu = document.getElementById('checkbox-4pnloidkd') ? document.getElementById('checkbox-4pnloidkd').checked : false;
+        const hoverDropdown = document.getElementById('checkbox-w90qw29wz') ? document.getElementById('checkbox-w90qw29wz').checked : false;
         const linkNamesInputValue = document.getElementById('searchInputTable-gji6hjwaw') ? document.getElementById('searchInputTable-gji6hjwaw').value : '';
+        const headerChecked = document.getElementById('checkbox-onr0orc8h') ? document.getElementById('checkbox-onr0orc8h').checked : true;
+        const headerInputValue = document.getElementById('input-onr0orc8h') ? document.getElementById('input-onr0orc8h').value : 'Titre';
 
+        if (!dropdownChecked) {
+            return '';
+        }
         const menuClass = mobileMenu ? " d-md-none" : "";
         let linksHtml = '';
         if (includeLinks) {
@@ -256,10 +294,12 @@ class DropdownElement extends BaseElement {
                 return `    <a class="cvt-dropdown-item"${dataValueAttr}${onClickAction} href="#">${linkName}</a>\n`;
             }).join('');
         }
+        const headerAttributeValue = (headerInputValue.trim() !== '' || !headerChecked) ? headerInputValue : "Titre";
 
-        return `<div class="cvt-dropdown${menuClass}" id="${dropdownId}">
+
+        return `<div class="cvt-dropdown${menuClass}" id="${dropdownId}" data-hover-toggle="${hoverDropdown}">
   <button class="btn cvt-dropdown-toggle" type="button">${this.content}</button>
-  <div class="cvt-dropdown-menu" id="${menuId}" data-cvt-auto-close="${autoCloseAttribute}">
+  <div class="cvt-dropdown-menu" id="${menuId}" data-cvt-auto-close="${autoCloseAttribute}" ${headerAttributeValue ? `data-header="${headerAttributeValue}"` : ''}>
 ${linksHtml}  </div>
 </div>`;
     }
@@ -268,6 +308,7 @@ ${linksHtml}  </div>
 class SelectElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
+        this.selectChecked = document.getElementById('checkbox-1i27d8hr0') ? document.getElementById('checkbox-1i27d8hr0').checked : true;
         this.includedLabel = document.getElementById('checkbox-3mshoosxmt9') ? document.getElementById('checkbox-3mshoosxmt9').checked : true;
         this.includedPlaceHolder = document.getElementById('checkbox-ogqqa4w2u') ? document.getElementById('checkbox-ogqqa4w2u').checked : true;
         this.optionsDefault = document.getElementById('checkbox-e6ysu3392') ? document.getElementById('checkbox-e6ysu3392').checked : false;
@@ -279,6 +320,10 @@ class SelectElement extends BaseElement {
     }
 
     generateCode() {
+
+        if (!this.selectChecked) {
+            return '';
+        }
         const selectId = `select-${this.uniqueId}`;
         let selectAttributes = `data-cvt-input-select="${this.incluedInputSearch ? 'true' : 'false'}"`;
         let placeholderOption = this.includedPlaceHolder && this.placeholderContent ?
@@ -422,13 +467,16 @@ class CardsElement extends BaseElement {
 
 class InputElement extends BaseElement {
     generateCode() {
-        const inputId = `searchInputTable-${this.uniqueId}`;
-        return `
+        const inputId = `input-${this.uniqueId}`;
+        let htmlCode = '';
+
+        htmlCode += `
 <div class="cvt-form-group">
-  <input type="search" id="${inputId}" aria-describedby="inputGroup-sizing-sm" autocomplete="off">
-  <label for="${inputId}">Recherche...</label>
-</div>
-        `;
+    <input type="search" id="${inputId}" autocomplete="off">
+    <label for="${inputId}">Recherche...</label>
+</div>`;
+
+        return htmlCode;
     }
 }
 
@@ -440,7 +488,7 @@ class NumberInputElement extends BaseElement {
     <button type="button" class="btn custom-button cvt-relief" data-change="-1">
         <i class="bi bi-arrow-down-circle"></i>
     </button>
-    <label>Taille : <span class="number-value-display">10</span></label>
+    <label><span class="number-value-display">10</span></label>
     <input type="number" class="number-input" min="1" max="20" value="10" style="display: none;">
     <button type="button" class="btn custom-button cvt-relief" data-change="1">
         <i class="bi bi-arrow-up-circle"></i>
@@ -459,101 +507,77 @@ class ToggleSwitchElement extends BaseElement {
     }
 
     generateCode() {
-        const toggleTypeValue = document.getElementById('toggleType').value;
+        const checkboxIconChecked = document.getElementById('create-toggle-kc8q2l9j1-2')?.checked;
+        const checkboxTextChecked = document.getElementById('create-toggle-kc8q2l9j1-3')?.checked;
 
-        switch (toggleTypeValue) {
-            case 'toggle-icon':
-                return this.generateIconToggle();
-            case 'toggle-text':
-                return this.generateTextToggle();
-            case 'toggle-icon-text':
-                return this.generateIconTextToggle();
-            case 'toggle-simple':
-                return this.generateSimpleToggle();
-            default:
-                return '';
+        let toggleType = 'simple';
+        let toggleValues = 'on,off';
+        let contentDisplay = '';
+
+        if (checkboxIconChecked && checkboxTextChecked) {
+            toggleType = 'icon-text';
+            toggleValues = 'bi-check-circle On,bi-x-circle Off';
+            contentDisplay = '<i class="bi-x-circle mx-2"></i> Off';
+        } else if (checkboxIconChecked) {
+            toggleType = 'icon';
+            toggleValues = 'bi-check-circle,bi-x-circle';
+            contentDisplay = '<i class="bi-x-circle mx-2"></i>';
+        } else if (checkboxTextChecked) {
+            toggleType = 'text';
+            toggleValues = 'On,Off';
+            contentDisplay = 'Off';
         }
-    }
 
-    generateIconToggle() {
-        return `
+        let htmlCode = `
 <div data-toggle-group="${this.groupId}">
     <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="${this.switchId}" data-toggle-type="icon"
-            data-toggle-values="bi-check-circle,bi-x-circle" data-toggle-target="${this.contentId}">
-        <label class="form-check-label" for="${this.switchId}">Interrupteur Icône</label>
-    </div>
-    <span id="${this.contentId}"><i class="bi-x-circle"></i></span>
-</div>`;
-    }
-
-    generateTextToggle() {
-        return `
-<div data-toggle-group="${this.groupId}">
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="${this.switchId}" data-toggle-type="text"
-            data-toggle-values="On,Off" data-toggle-target="${this.contentId}">
-        <label class="form-check-label" for="${this.switchId}">Interrupteur Texte</label>
-    </div>
-    <span id="${this.contentId}">Off</span>
-</div>`;
-    }
-
-    generateIconTextToggle() {
-        return `
-<div data-toggle-group="${this.groupId}">
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="${this.switchId}" data-toggle-type="icon-text"
-            data-toggle-values="bi-check-circle On,bi-x-circle Off" data-toggle-target="${this.contentId}">
-        <label class="form-check-label" for="${this.switchId}">Interrupteur Icône + Texte</label>
-    </div>
-    <span id="${this.contentId}"><i class="bi-x-circle"></i> Off</span>
-</div>`;
-    }
-
-    generateSimpleToggle() {
-        return `
-<div data-toggle-group="${this.groupId}">
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="${this.switchId}" data-toggle-type="simple"
+        <input class="form-check-input" type="checkbox" id="${this.switchId}"
+            data-toggle-type="${toggleType}"
+            data-toggle-values="${toggleValues}" 
             data-toggle-target="${this.contentId}">
-        <label class="form-check-label" for="${this.switchId}">Interrupteur simple</label>
+        <label class="form-check-label" for="${this.switchId}">Interrupteur ${toggleType}</label>
     </div>
-    <span id="${this.contentId}"></span>
+    <span id="${this.contentId}">${contentDisplay}</span>
 </div>`;
+
+        return htmlCode;
     }
 }
 
 class CheckboxElement extends BaseElement {
     generateCode() {
-        const checkboxId = `checkbox-${this.uniqueId}`;
-        return `
-<label class="checkbox-cvt"><input type="checkbox" id="${checkboxId}" ${this.isChecked ? 'checked' : ''}>Name_label</label>`;
-    }
-}
+        const checkboxCollapseInputChecked = document.getElementById('checkbox-m1jfililx')?.checked;
+        const checkboxCollapseCheckboxChecked = document.getElementById('checkbox-2tpytaeyd')?.checked;
+        const multipleOptionsChecked = document.getElementById('checkbox-check-5m12adjzu-1')?.checked ? "true" : "false";
 
-class CheckboxCollapseElement extends BaseElement {
-    constructor(type, className, content, isChecked = false) {
-        super(type, className, content);
-        this.isChecked = isChecked;
-    }
+        const uniqueId = `${this.uniqueId}`;
+        const baseIdCheckbox = `checkbox-${uniqueId}`;
+        const dataTargetInput = `input-${uniqueId}`;
+        const dataTargetCheckbox = `checkbox-check-${uniqueId}`;
 
-    generateCode() {
-        const checkboxId = `checkbox-${this.uniqueId}`;
-        const inputGroupId = `searchInputTable-${this.uniqueId}`;
+        let htmlCode = '';
 
-        const checkboxHtml = `
-<label class="checkbox-cvt">
-  <input type="checkbox" id="${checkboxId}" data-cvt-checkbox-collapse="${this.uniqueId}" ${this.isChecked ? 'checked' : ''}>Name_label
-</label>`;
+        htmlCode += `<label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}" `;
+        if (checkboxCollapseCheckboxChecked) {
+            htmlCode += `data-cvt-checkbox-check-collapse="${dataTargetCheckbox}" `;
+        } else if (checkboxCollapseInputChecked) {
+            htmlCode += `data-cvt-checkbox-collapse="${dataTargetInput}" `;
+        }
+        htmlCode += `>Checkbox</label>\n`;
 
-        const inputGroupHtml = `
-<div class="cvt-form-group" data-cvt-input-group="${this.uniqueId}" style="display: none;">
-  <input type="search" id="${inputGroupId}" aria-describedby="inputGroup-sizing-sm" autocomplete="off">
-  <label for="${inputGroupId}">Recherche...</label>
-</div>`;
+        if (checkboxCollapseCheckboxChecked) {
+            htmlCode += `<div class="collapse-cvt-container" data-cvt-checkbox-group="${dataTargetCheckbox}" data-cvt-checkbox-multiple="${multipleOptionsChecked}" style="display: none;">\n`;
+            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-1">Option_1</label>\n`;
+            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-2">Option_2</label>\n`;
+            htmlCode += `</div>\n`;
+        } else if (checkboxCollapseInputChecked) {
+            htmlCode += `<div class="cvt-form-group collapse-cvt-container" data-cvt-checkbox-group="${dataTargetInput}" data-cvt-checkbox-multiple="${multipleOptionsChecked}" style="display: none;">\n`;
+            htmlCode += `    <input type="search" id="input-${uniqueId}" autocomplete="off">\n`;
+            htmlCode += `    <label for="input-${uniqueId}">Recherche...</label>\n`;
+            htmlCode += `</div>\n`;
+        }
 
-        return checkboxHtml + inputGroupHtml;
+        return htmlCode;
     }
 }
 
@@ -802,9 +826,8 @@ class BootstrapGridElement extends BaseElement {
 
     generateGrid() {
         let gridHtml = this.useContainer ? '<div class="container">\n' : '';
-        let rowClasses = "row"; // Classe par défaut pour les lignes
+        let rowClasses = "row";
 
-        // Ajouter les classes Flex selon les cases cochées
         if (this.centerContent) {
             rowClasses += " d-flex justify-content-center";
         } else if (this.spaceBetween) {
@@ -828,7 +851,7 @@ class BootstrapGridElement extends BaseElement {
 
         return gridHtml;
     }
-    
+
     generateBreakpointClasses(colSize) {
         if (!this.adaptationMobile) {
             return `${this.breakpointPrefix}${colSize}`;
@@ -837,18 +860,18 @@ class BootstrapGridElement extends BaseElement {
         const breakpointsOrder = ['col-', 'col-sm-', 'col-md-', 'col-lg-', 'col-xl-', 'col-xxl-'];
         const breakpointIndex = breakpointsOrder.findIndex(breakpoint => this.breakpointPrefix === breakpoint);
         let classes = '';
-    
+
         for (let i = 0; i < breakpointIndex; i++) {
             let adjustedSize = Math.min(colSize + 2, 12);
             classes += `${breakpointsOrder[i]}${adjustedSize} `;
         }
-    
+
         classes += `${this.breakpointPrefix}${colSize} `;
-    
+
         for (let i = breakpointIndex + 1; i < breakpointsOrder.length; i++) {
             classes += `${breakpointsOrder[i]}${colSize} `;
         }
-    
+
         return classes.trim();
     }
 
@@ -861,7 +884,8 @@ class BootstrapGridElement extends BaseElement {
 
 // Fonction factory pour créer des éléments
 const elementClasses = {
-    'button': ButtonElement,
+    'button': ButtonBoostrapElement,
+    'cvt-button': ButtonCvtElement,
     'title': TitleElement,
     'title-color': TitleElement,
     'subtitle': TitleElement,
@@ -878,7 +902,6 @@ const elementClasses = {
     'accordion': AccordionsElement,
     'toggle-switch': ToggleSwitchElement,
     'checkbox': CheckboxElement,
-    'checkbox-collapse': CheckboxCollapseElement,
     'card': CardsElement,
     'drag-drop': DragAndDropElement,
     'tabs-nav': TabsElement,
@@ -915,71 +938,33 @@ function updateEditorCode(editor, newCode) {
     }
 
     if (mode === 'multiple') {
-        const previewElement = document.getElementById('preview');
+        const previewElement = document.getElementById('previewCodeResult');
         previewElement.innerHTML += finalCode;
     } else {
-        document.getElementById('preview').innerHTML = finalCode;
+        document.getElementById('previewCodeResult').innerHTML = finalCode;
     }
 
     activateCustomComponents();
 }
 
 function activateCustomComponents() {
-    document.querySelectorAll('.cvt-accordion-button').forEach(button => {
-        button.addEventListener('click', function () {
-            const accordionContentId = this.getAttribute('data-cvt-target');
-            const accordionContent = document.querySelector(accordionContentId);
+    // Réapplique les écouteurs pour les modaux
+    document.querySelectorAll('[data-toggle="cvt-modal"]').forEach(toggle => {
+        toggle.onclick = function () {
+            var modalId = this.dataset.target;
+            var modal = document.querySelector(modalId);
+            modal.style.display = "block";
+        };
+    });
+    // Écouteurs pour les toggles Offcanvas
+    document.querySelectorAll('.cvt-offcanvas-toggler').forEach(toggler => {
+        toggler.addEventListener('click', function () {
+            const target = this.getAttribute('data-offcanvas-target');
+            const offcanvasElement = document.querySelector(target);
+            offcanvasElement.classList.toggle('active');
 
-            if (accordionContent.style.display === 'block') {
-                accordionContent.style.display = 'none';
-            } else {
-                accordionContent.style.display = 'block';
-            }
         });
     });
 
 }
 
-
-
-class ButtonUIManager {
-    constructor() {
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        document.getElementById('selectTypeButton').addEventListener('change', this.handleStyleChange.bind(this));
-
-        const checkboxSmall = document.getElementById('checkbox-ryx3dh0q6');
-        const checkboxLarge = document.getElementById('checkbox-iu8l4b6ui');
-
-        checkboxSmall.addEventListener('change', () => this.handleSizeChange(checkboxSmall, checkboxLarge));
-        checkboxLarge.addEventListener('change', () => this.handleSizeChange(checkboxLarge, checkboxSmall));
-    }
-
-    handleStyleChange(event) {
-        const selectValue = event.target.value;
-        const buttons = document.querySelectorAll('#buttonContainer button[data-type="button"]');
-
-        buttons.forEach(button => {
-            let currentClasses = button.className.split(' ');
-
-            const isOutline = currentClasses.some(cls => cls.startsWith('btn-outline-'));
-
-            if (selectValue === 'outline' && !isOutline) {
-                button.className = button.className.replace(/btn-(?!link\b)/g, 'btn-outline-');
-            } else if (selectValue === 'simple' && isOutline) {
-                button.className = button.className.replace(/btn-outline-/g, 'btn-');
-            }
-        });
-    }
-
-    handleSizeChange(checkedCheckbox, otherCheckbox) {
-        if (checkedCheckbox.checked) {
-            otherCheckbox.checked = false;
-        }
-    }
-}
-
-// Initialisation
-new ButtonUIManager();

@@ -117,3 +117,10 @@
 .radio-cvt input:not(:checked)~.radiomark-cvt:after {
     animation: none;
 }
+
+
+
+/* container */
+.collapse-cvt-container {
+    margin-left: 50px;
+}

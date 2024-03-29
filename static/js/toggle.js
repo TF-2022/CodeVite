@@ -8,18 +8,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const toggles = group.querySelectorAll('input[type="checkbox"]');
         toggles.forEach(toggle => {
             const toggleType = toggle.getAttribute('data-toggle-type');
-            const toggleValues = toggle.getAttribute('data-toggle-values').split(',');
-            const toggleTargetId = toggle.getAttribute('data-toggle-target');
-            const toggleTarget = document.getElementById(toggleTargetId);
-
-            toggle.addEventListener('change', () => {
-                updateToggleContent(toggle, toggleType, toggleValues, toggleTarget);
-                saveToggleState(group, toggle);
-            });
-
-            restoreToggleState(group, toggle, toggleType, toggleValues, toggleTarget);
+            const toggleValuesAttribute = toggle.getAttribute('data-toggle-values');
+            
+            // Vérifier si l'attribut data-toggle-values est défini
+            if (toggleValuesAttribute) {
+                const toggleValues = toggleValuesAttribute.split(',');
+                const toggleTargetId = toggle.getAttribute('data-toggle-target');
+                const toggleTarget = document.getElementById(toggleTargetId);
+    
+                toggle.addEventListener('change', () => {
+                    updateToggleContent(toggle, toggleType, toggleValues, toggleTarget);
+                    saveToggleState(group, toggle);
+                });
+    
+                restoreToggleState(group, toggle, toggleType, toggleValues, toggleTarget);
+            } else {
+                // Gérer le cas où l'attribut data-toggle-values n'est pas défini
+                console.error('Attribute data-toggle-values is not defined for toggle:', toggle);
+            }
         });
     }
+    
 
     function updateToggleContent(toggle, type, values, target) {
         if (type === 'text') {

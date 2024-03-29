@@ -1,4 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.cvt-dropdown-menu.show').forEach(function(menu) {
+      menu.classList.remove('show');
+    });
+  }
+
+  function addDropdownHeaders() {
+    document.querySelectorAll('.cvt-dropdown-menu').forEach(function(menu) {
+      const headerText = menu.getAttribute('data-header');
+      if (headerText) {
+        const header = document.createElement('h6');
+        header.classList.add('dropdown-cvt-header');
+        header.textContent = headerText;
+  
+        const divider = document.createElement('div');
+        divider.classList.add('dropdown-cvt-divider');
+  
+        menu.insertBefore(divider, menu.firstChild);
+        menu.insertBefore(header, divider);
+      }
+    });
+  }
+
   document.addEventListener('click', function(event) {
     let insideDropdown = event.target.closest('.cvt-dropdown-menu');
     if (insideDropdown && insideDropdown.getAttribute('data-cvt-auto-close') === 'false') {
@@ -6,34 +30,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (!event.target.matches('.cvt-dropdown-toggle')) {
-      document.querySelectorAll('.cvt-dropdown-menu.show').forEach(function(menu) {
-        menu.classList.remove('show');
-      });
-    } else { // Si le clic est sur un toggle, gérer l'affichage du menu
+      closeAllDropdowns();
+    } else {
       let currentMenu = event.target.nextElementSibling;
       let isShown = currentMenu.classList.contains('show');
-      document.querySelectorAll('.cvt-dropdown-menu.show').forEach(function(menu) {
-        menu.classList.remove('show');
-      });
+      closeAllDropdowns();
       if (!isShown) {
         currentMenu.classList.add('show');
       }
-      event.preventDefault(); // Prévenir le comportement par défaut du navigateur
+      event.preventDefault();
     }
   });
 
-  // Ajout d'un écouteur pour chaque élément du menu déroulant
   document.querySelectorAll('.cvt-dropdown-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      // Récupérer la valeur ou le texte de l'élément cliqué
-      let value = this.getAttribute('data-value') || this.innerText;
-      // Mettre à jour le texte du bouton toggle correspondant
-      let toggleButton = this.closest('.cvt-dropdown').querySelector('.cvt-dropdown-toggle');
-      if (toggleButton) {
-        toggleButton.innerText = value;
+    item.addEventListener('click', function(event) {
+      let dropdownMenu = this.closest('.cvt-dropdown-menu');
+      if (dropdownMenu && dropdownMenu.getAttribute('data-cvt-auto-close') === 'true') {
+        dropdownMenu.classList.remove('show');
       }
-      // Fermer le menu déroulant
-      this.closest('.cvt-dropdown-menu').classList.remove('show');
     });
   });
+
+  document.querySelectorAll('.cvt-dropdown').forEach(function(dropdown) {
+    if (dropdown.getAttribute('data-hover-toggle') === 'true') {
+      let toggleButton = dropdown.querySelector('.cvt-dropdown-toggle');
+      let menu = dropdown.querySelector('.cvt-dropdown-menu');
+      
+      toggleButton.addEventListener('mouseenter', function() {
+        closeAllDropdowns();
+        menu.classList.add('show');
+      });
+      
+      dropdown.addEventListener('mouseleave', function() {
+        menu.classList.remove('show');
+      });
+    }
+  });
+
+  addDropdownHeaders();
 });
