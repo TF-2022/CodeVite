@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     document.querySelectorAll('input[data-type]').forEach(input => {
-        input.addEventListener('blur', function() {
+        input.addEventListener('blur', function () {
             const type = this.getAttribute('data-type');
             const element = createElement(type, this.className, this.value);
             if (element) {
@@ -906,6 +906,42 @@ class BootstrapGridElement extends BaseElement {
     }
 }
 
+class BadgesElement extends BaseElement {
+    constructor(className) {
+        super();
+        this.className = className;
+        this.isBadgeChecked = document.getElementById('checkbox-ig07g74wz')?.checked ?? false;
+        this.isLightChecked = document.getElementById('checkbox-t90k01vec')?.checked ?? false;
+        this.isBorderChecked = document.getElementById('checkbox-n9d3avw23')?.checked ?? false;
+        this.sizeBadgeValue = document.querySelector('input[name="sizeBadge"]:checked')?.value || '';
+        this.colorBadgeValue = document.querySelector('input[name="badgeColor"]:checked')?.value || 'primary';
+        this.isInputValue = document.getElementById('input-zuo9itt3m')?.value || 'Badge';
+    }
+
+    generateCode() {
+        if (!this.isBadgeChecked) {
+            return '';
+        }
+
+        let baseStyleClass = this.isLightChecked ? 'bdg-light' : 'bdg';
+
+        let badgeClasses = `cvt-badge ${baseStyleClass}-${this.colorBadgeValue}`;
+        if (this.sizeBadgeValue) {
+            badgeClasses += ` bdg-size${this.sizeBadgeValue}`;
+        }
+        if (this.isBorderChecked) {
+            badgeClasses += ' bdg-light-bordered';
+        }
+
+        let badgeContent = this.isInputValue.trim() ? this.isInputValue : 'Badge';
+
+        let htmlCode = `<span class="${badgeClasses}">${badgeContent}</span>`;
+
+        return htmlCode;
+    }
+}
+
+
 
 
 // Fonction factory pour créer des éléments
@@ -935,6 +971,7 @@ const elementClasses = {
     'button-collapse': CollapseButtonElement,
     'select': SelectElement,
     'grid': BootstrapGridElement,
+    'badge': BadgesElement,
 };
 
 function createElement(type, className, content) {

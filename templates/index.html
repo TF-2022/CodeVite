@@ -40,12 +40,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/draggable.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tabs.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/selects.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/badges.css') }}">
 
 </head>
 
 <body class="d-flex flex-column vh-100 overflow-hidden">
 
-    <header class="container-fluid">
+    <header>
         <nav class="navbar fixed-top">
             <div class="container">
                 <button id="sidebarToggle" class="cvt-sidebar-toggle-btn">
@@ -63,10 +64,6 @@
 
     <div class="sidebar-fixed">
         <div class="sidebar-content">
-            <a href="#content-generator" class="cvt-nav-item">
-                <i class="bi bi-plus-lg text-primary" aria-hidden="true"></i>
-                <p>Crée un composant</p>
-            </a>
             <a href="#content-buttons" class="cvt-nav-item">
                 <i class="bi bi-toggle-on" aria-hidden="true"></i>
                 <p>Boutons</p>
@@ -114,6 +111,10 @@
             <a href="#content-chart" class="cvt-nav-item">
                 <i class="bi bi-graph-up" aria-hidden="true"></i>
                 <p>Graphiques</p>
+            </a>
+            <a href="#content-badges" class="cvt-nav-item">
+                <i class="bi bi-app-indicator" aria-hidden="true"></i>
+                <p>Badge</p>
             </a>
         </div>
         <div class="sidebar-bottom">
@@ -163,6 +164,9 @@
                 </div>
                 <div id="content-chart" class="col-12 content-section" style="display: none;">
                     {% include 'pages/chart.html' %}
+                </div>
+                <div id="content-badges" class="col-12 content-section" style="display: none;">
+                    {% include 'pages/badges.html' %}
                 </div>
             </div>
             <div class="col-lg">

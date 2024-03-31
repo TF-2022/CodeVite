@@ -8,7 +8,26 @@
     --info: #17a2b8;
     --light: #f8f9fa;
     --dark: #343a40;
+
+    --primary-light: #e1f0ff;
+    --secondary-light: #f0f0f0;
+    --success-light: #d9f8eb;
+    --danger-light: #ffe1e1;
+    --warning-light: #fde6d8;
+    --info-light: #e0f7ff;
+    --light: #ffffff;
+    --dark-light: #eaeaea;
+
+    --txt-light-primary: #0056b3;
+    --txt-light-secondary: #6c757d;
+    --txt-light-success: #00894f;
+    --txt-light-danger: #dc3545;
+    --txt-light-warning: #ff7a2e;
+    --txt-light-info: #17a2b8;
+    --txt-light-light: #818182;
+    --txt-light-dark: #343a40;
     --warning-text: #212529;
+    
     --shadow-rgba: rgba(0, 0, 0, 0.1);
     --hover-brightness: 0.95;
 
