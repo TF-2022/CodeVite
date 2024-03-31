@@ -39,6 +39,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+    document.querySelectorAll('input[data-type]').forEach(input => {
+        input.addEventListener('blur', function() {
+            const type = this.getAttribute('data-type');
+            const element = createElement(type, this.className, this.value);
+            if (element) {
+                const newCode = element.generateCode();
+                updateEditorCode(editor, newCode);
+            }
+        });
+    });
 
     document.getElementById('resetEditor').addEventListener('click', function () {
         editor.setValue('');
@@ -83,44 +93,60 @@ class BaseElement {
     }
 }
 
-// Classes create éléments 
-class ButtonBoostrapElement extends BaseElement {
-    constructor(content) {
+class ButtonCvtElement extends BaseElement {
+    constructor(content, className) {
         super();
         this.content = content;
+        this.className = className;
     }
 
     generateCode() {
-        const isButtonBootstrapChecked = document.getElementById('checkbox-b8zonwxpi')?.checked ?? true;
-        if (!isButtonBootstrapChecked) return '';
+        let inputValue = document.getElementById('input-ofgxbo280').value;
+        const isButtonChecked = document.getElementById('checkbox-f83d232dq')?.checked ?? true;
+        const styleOption = document.querySelector('input[name="styleOption"]:checked')?.value ?? 'none';
+        const isShadowChecked = document.getElementById('checkbox-ydwkoan60')?.checked ?? false;
+        const sizeClass = document.querySelector('input[name="size"]:checked')?.value ?? '';
+        const colorValue = document.querySelector('input[name="btnColor"]:checked')?.value ?? 'primary';
+        const textColorValue = document.querySelector('input[name="btnTextColor"]:checked')?.value;
 
-        const isOutlineChecked = document.getElementById('checkbox-nugwde2vb-2')?.checked ?? false;
-        const baseClass = isOutlineChecked ? 'btn-outline-primary' : 'btn-primary';
-        let buttonClasses = ['btn', baseClass];
-
-        const sizeClass = document.getElementById('checkbox-52skcrpn6')?.checked ? (
-            document.getElementById('checkbox-ryx3dh0q6')?.checked ? 'btn-sm' :
-                document.getElementById('checkbox-iu8l4b6ui')?.checked ? 'btn-lg' :
-                    ''
-        ) : '';
-
-        if (sizeClass) buttonClasses.push(sizeClass);
-
-        const colorClass = document.querySelector('input[type="radio"][name="couleur"]:checked')?.value;
-        if (colorClass && colorClass !== 'primary') {
-            buttonClasses[1] = isOutlineChecked ? `btn-outline-${colorClass}` : `btn-${colorClass}`;
+        if (!isButtonChecked) {
+            return '';
         }
 
-        return `<button class="${buttonClasses.join(' ')}">${this.content}</button>`;
-    }
-}
-class ButtonCvtElement extends BaseElement {
-    generateCode() {
-        const isOutlineChecked = document.getElementById('checkbox-pt711drxn')?.checked ?? false;
-        let htmlCode = '';
+        let baseClass = 'cvt-btn';
+        let colorAndStyleClass;
 
-        htmlCode += `<button class="btn custom-button cvt-relief cvt-warning" data-type="button">Relief</button>
-        `;
+        if (styleOption === 'survol') {
+            colorAndStyleClass = `btn-h-${colorValue}`;
+        } else if (styleOption === 'clique') {
+            colorAndStyleClass = `btn-f-${colorValue}`;
+        } else {
+            colorAndStyleClass = `btn-n-${colorValue}`;
+        }
+
+        let textColorClass = '';
+        if (textColorValue && textColorValue !== 'auto') {
+            textColorClass = `t-${textColorValue}`;
+        }
+
+        let finalClasses = [baseClass, colorAndStyleClass];
+        if (textColorClass) {
+            finalClasses.push(textColorClass);
+        }
+
+        if (sizeClass) {
+            finalClasses.push(`sz-btn${sizeClass}`);
+        }
+
+        if (isShadowChecked) {
+            finalClasses.push('sh');
+        }
+
+        if (!inputValue.trim()) {
+            inputValue = styleOption.charAt(0).toUpperCase() + styleOption.slice(1);
+        }
+
+        let htmlCode = `<button class="${finalClasses.join(' ')}">${inputValue}</button>`;
 
         return htmlCode;
     }
@@ -203,7 +229,7 @@ class ModalElement extends BaseElement {
         }
 
         return `
-<button id="${buttonId}" class="btn custom-button" data-toggle="cvt-modal" data-target="#${modalId}">
+<button id="${buttonId}" class="cvt-btn btn-n-light sz-btn-sm sh" data-toggle="cvt-modal" data-target="#${modalId}">
     Button
 </button>
 <div id="${modalId}" class="cvt-modal" tabindex="-1" aria-hidden="true">
@@ -237,7 +263,7 @@ class OffCanvasElement extends BaseElement {
         const buttonId = `button-${this.uniqueId}`;
         const positionClass = `cvt-offcanvas-${position}`;
 
-        const buttonHtml = `<button id="${buttonId}" class="btn custom-button cvt-relief cvt-offcanvas-toggler" data-offcanvas-target="#${offCanvasId}">
+        const buttonHtml = `<button id="${buttonId}" class="cvt-btn btn-n-light sz-btn-sm sh cvt-offcanvas-toggler" data-offcanvas-target="#${offCanvasId}">
   <i class="bi bi-gear"></i>
 </button>`;
 
@@ -485,12 +511,12 @@ class NumberInputElement extends BaseElement {
         const numberInputContainerId = `number-input-${this.uniqueId}`;
         return `
 <div class="number-input-container" id="${numberInputContainerId}" data-number-input-id="${numberInputContainerId}">
-    <button type="button" class="btn custom-button cvt-relief" data-change="-1">
+    <button type="button" class="cvt-btn btn-n-light sz-btn-sm sh" data-change="-1">
         <i class="bi bi-arrow-down-circle"></i>
     </button>
     <label><span class="number-value-display">10</span></label>
     <input type="number" class="number-input" min="1" max="20" value="10" style="display: none;">
-    <button type="button" class="btn custom-button cvt-relief" data-change="1">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm shf" data-change="1">
         <i class="bi bi-arrow-up-circle"></i>
     </button>
 </div>
@@ -884,7 +910,6 @@ class BootstrapGridElement extends BaseElement {
 
 // Fonction factory pour créer des éléments
 const elementClasses = {
-    'button': ButtonBoostrapElement,
     'cvt-button': ButtonCvtElement,
     'title': TitleElement,
     'title-color': TitleElement,

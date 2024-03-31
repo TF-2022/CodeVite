@@ -101,16 +101,13 @@ $font-weights: (
   }
   
 // Flexbox utilities
-.df { display: flex !important; }
-.fr { flex-direction: row !important; }
-.fc { flex-direction: column !important; }
-.jcs { justify-content: flex-start !important; }
-.jce { justify-content: flex-end !important; }
-.jcc { justify-content: center !important; }
-.jcb { justify-content: space-between !important; }
-.ais { align-items: flex-start !important; }
-.aie { align-items: flex-end !important; }
-.aic { align-items: center !important; }
+.j-start { display: flex !important; justify-content: flex-start !important; }
+.j-end { display: flex !important; justify-content: flex-end !important; }
+.j-center { display: flex !important; justify-content: center !important; }
+.j-between { display: flex !important; justify-content: space-between !important; }
+.j-f-start { display: flex !important; align-items: flex-start !important; }
+.j-f-end { display: flex !important; align-items: flex-end !important; }
+.a-center { display: flex !important; align-items: center !important; }
 
 // Visibilité
 .dn { display: none !important; }

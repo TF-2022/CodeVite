@@ -1,5 +1,18 @@
 
 :root, .light-theme {
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --warning-text: #212529;
+    --shadow-rgba: rgba(0, 0, 0, 0.1);
+    --hover-brightness: 0.95;
+
+    
     --cvt-sw: 0 2px 4px rgba(0, 0, 0, 0.1);
     --effet-ombre: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
     --afd-color-blue-light: #3a8899;

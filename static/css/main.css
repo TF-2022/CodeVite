@@ -1,11 +1,21 @@
-html,
-body {
+html, body {
   height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
+  overflow: hidden;
 }
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-content-cvt {
+  overflow-y: auto;
+  height: 100%;
+}
+
 
 .secondary-background {
   background-color: var(--secondary-background-color);
@@ -22,7 +32,10 @@ body {
   padding: 5px;
 }
 
-
 .col-border-right {
   border-right: 1px solid var(--cvt-color-grey-light);
+  overflow-y: auto;
+  height: 100%; 
 }
+
+.sh { box-shadow: 0 4px 6px var(--shadow-rgba); }

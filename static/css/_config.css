@@ -467,36 +467,23 @@
 .pr-5, .px-5 {
     padding-right: 5rem !important;
 }
-.df {
-    display: flex !important;
-}
-.fr {
-    flex-direction: row !important;
-}
-.fc {
-    flex-direction: column !important;
-}
-.jcs {
-    justify-content: flex-start !important;
-}
-.jce {
-    justify-content: flex-end !important;
-}
-.jcc {
-    justify-content: center !important;
-}
-.jcb {
-    justify-content: space-between !important;
-}
-.ais {
-    align-items: flex-start !important;
-}
-.aie {
-    align-items: flex-end !important;
-}
-.aic {
-    align-items: center !important;
-}
+
+.text-horiz-center { text-align: center !important; }
+.horiz-start { display: flex !important; justify-content: flex-start !important; }
+.horiz-end { display: flex !important; justify-content: flex-end !important; }
+.horiz-center { display: flex !important; justify-content: center !important; }
+.horiz-between { display: flex !important; justify-content: space-between !important; }
+.horiz-f-start { display: flex !important; align-items: flex-start !important; }
+.horiz-f-end { display: flex !important; align-items: flex-end !important; }
+.verti-center { display: flex !important; align-items: center !important; }
+
+/* Largeur */
+.large-25 { width: 25% !important; }
+.large-50 { width: 50% !important; }
+.large-75 { width: 75% !important; }
+.large-100 { width: 100% !important; }
+
+  
 .dn {
     display: none !important;
 }

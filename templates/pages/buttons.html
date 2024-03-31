@@ -1,41 +1,83 @@
-<label class="checkbox-cvt"><input type="checkbox" id="checkbox-b8zonwxpi"
-        data-cvt-checkbox-check-collapse="checkbox-check-b8zonwxpi" data-type="button">Button</label>
-<div class="collapse-cvt-container" data-cvt-checkbox-group="checkbox-check-b8zonwxpi" data-cvt-checkbox-multiple="true"
-    style="display: none;">
-    <div data-cvt-checkbox-group="checkbox-check-nugwde2vb" data-cvt-checkbox-multiple="false">
-        <label class="checkbox-cvt"><input type="checkbox" id="checkbox-nugwde2vb-2" data-type="button">Outline</label>
-    </div>
-    <hr>
-    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-52skcrpn6"
-            data-cvt-checkbox-check-collapse="checkbox-check-52skcrpn6" data-type="button">Taille</label>
-    <div class="collapse-cvt-container" data-cvt-checkbox-group="checkbox-check-52skcrpn6"
-        data-cvt-checkbox-multiple="false" style="display: none;">
-        <label><input type="radio" name="taille" id="checkbox-ryx3dh0q6" data-type="button">Petit</label>
-        <label><input type="radio" name="taille" id="checkbox-iu8l4b6ui" data-type="button">Large</label>
-    </div>
 
+<label class="checkbox-cvt"><input type="checkbox" id="checkbox-f83d232dq"data-cvt-checkbox-check-collapse="checkbox-check-f83d232dq" data-type="cvt-button">CVT Buttons</label>
+<div data-cvt-checkbox-group="checkbox-check-f83d232dq" data-cvt-checkbox-multiple="true"style="display: none;">
+    <div class="cvt-form-group">
+        <input type="search" id="input-ofgxbo280" autocomplete="off" data-type="cvt-button">
+        <label for="input-ofgxbo280">Nom</label>
+    </div>
     <hr>
-    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-yz48mu4ps"
-            data-cvt-checkbox-check-collapse="checkbox-check-yz48mu4ps">Style</label>
-    <div class="collapse-cvt-container" data-cvt-checkbox-group="checkbox-check-yz48mu4ps"
-        data-cvt-checkbox-multiple="false" style="display: none;">
-        <label><input type="radio" name="couleur" id="radio-primary" data-type="button" value="primary" />
-            Primary</label>
-        <label><input type="radio" name="couleur" id="radio-secondary" data-type="button" value="secondary" />
-            Secondary</label>
-        <label><input type="radio" name="couleur" id="radio-success" data-type="button" value="success" />
-            Success</label>
-        <label><input type="radio" name="couleur" id="radio-danger" data-type="button" value="danger" /> Danger</label>
-        <label><input type="radio" name="couleur" id="radio-warning" data-type="button" value="warning" />
-            Warning</label>
-        <label><input type="radio" name="couleur" id="radio-info" data-type="button" value="info" /> Info</label>
-        <label><input type="radio" name="couleur" id="radio-light" data-type="button" value="light" /> Light</label>
-        <label><input type="radio" name="couleur" id="radio-dark" data-type="button" value="dark" /> Dark</label>
-        <hr>
+    <label class="radio-cvt"><input type="radio" name="styleOption" value="simple" data-type="cvt-button" checked> Normal</label>
+    <label class="radio-cvt"><input type="radio" name="styleOption" value="survol"  data-type="cvt-button"> Effet au survol</label>
+    <label class="radio-cvt"><input type="radio" name="styleOption" value="clique"  data-type="cvt-button"> Ajouter un bord au clic</label>
+    <hr>
+    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-ydwkoan60" data-type="cvt-button"> Shadow</label>
+    <hr>
+    <button class="cvt-btn btn-h-light t-dark sz-btn-sm sh large-100 horiz-between" data-cvt-toggle="collapse" data-cvt-target="#collapseContent-9h2kq2wtl-0" data-cvt-rotated="false">
+        Taille <span class="cvt-chevron"></span>
+    </button>
+    <div class="cvt-collapse" id="collapseContent-9h2kq2wtl-0">
+        <div class="card card-body">
+            <div class="size-options">
+                <label class="radio-cvt"><input type="radio" name="size" value="" data-type="cvt-button" checked> Normal</label>
+                <label class="radio-cvt"><input type="radio" name="size" value="-xs" data-type="cvt-button"> Extra Small</label>
+                <label class="radio-cvt"><input type="radio" name="size" value="-sm" data-type="cvt-button"> Small</label>
+                <label class="radio-cvt"><input type="radio" name="size" value="-lg" data-type="cvt-button"> Large</label>
+                <label class="radio-cvt"><input type="radio" name="size" value="-xl" data-type="cvt-button"> Extra Large</label>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <button class="cvt-btn btn-h-light t-dark sz-btn-sm sh large-100 horiz-between" data-cvt-toggle="collapse" data-cvt-target="#collapseContent-9h2kq2wtl-1" data-cvt-rotated="false">
+        Couleur de fond <span class="cvt-chevron"></span>
+    </button>
+    <div class="cvt-collapse" id="collapseContent-9h2kq2wtl-1">
+        <div class="card card-body">
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-primary" data-type="cvt-button" value="primary" checked/>Primary</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-secondary" data-type="cvt-button" value="secondary" />Secondary</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-success" data-type="cvt-button" value="success" />Success</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-danger" data-type="cvt-button" value="danger" /> Danger</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-warning" data-type="cvt-button" value="warning" />Warning</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-info" data-type="cvt-button" value="info" /> Info</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-light" data-type="cvt-button" value="light" /> Light</label>
+            <label class="radio-cvt"><input type="radio" name="btnColor" id="radio-dark" data-type="cvt-button" value="dark" /> Dark</label>
+        </div>
+    </div>
+    <hr>
+    <button class="cvt-btn btn-h-light t-dark sz-btn-sm sh large-100 horiz-between" data-cvt-toggle="collapse" data-cvt-target="#collapseContent-9h2kq2wtl-2" data-cvt-rotated="false">
+        Couleur de texte <span class="cvt-chevron"></span>
+    </button>
+    <div class="cvt-collapse" id="collapseContent-9h2kq2wtl-2">
+        <div class="card card-body">
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-auto" data-type="cvt-button" value="" checked/>Auto</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-primary" data-type="cvt-button" value="primary"/>Primary</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-secondary" data-type="cvt-button" value="secondary" />Secondary</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-success" data-type="cvt-button" value="success" />Success</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-danger" data-type="cvt-button" value="danger" /> Danger</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-warning" data-type="cvt-button" value="warning" />Warning</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-info" data-type="cvt-button" value="info" /> Info</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-light" data-type="cvt-button" value="light" /> Light</label>
+            <label class="radio-cvt"><input type="radio" name="btnTextColor" id="radio-t-dark" data-type="cvt-button" value="dark" /> Dark</label>
+        </div>
     </div>
 </div>
 <hr>
-<div id="buttonContainer">
-    <button class="btn custom-button cvt-relief cvt-warning" data-type="cvt-button">Relief</button>
-    <label class="checkbox-cvt"><input type="checkbox" id="checkbox-pt711drxn" data-type="cvt-button">Outline</label>
+<button class="cvt-btn btn-h-light t-dark sz-btn-sm sh large-100 horiz-between" data-cvt-toggle="collapse" data-cvt-target="#collapseContent-xktytfm4x-0" data-cvt-rotated="false">
+    Button Collapse <span class="cvt-chevron"></span>
+</button>
+<div class="cvt-collapse" id="collapseContent-xktytfm4x-0">
+    <div class="card card-body">
+        <div class="number-input-container" id="number-input-ks835gbv9" data-number-input-id="number-input-ks835gbv9">
+            <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="-1">
+                <i class="bi bi-arrow-down-circle"></i>
+            </button>
+            <label>Combien ? : <span class="number-value-display">10</span></label>
+            <input type="number" class="number-input" min="1" max="10" value="3" style="display: none;">
+            <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="1">
+                <i class="bi bi-arrow-up-circle"></i>
+            </button>
+        </div>
+        <br>
+        <button class="cvt-btn btn-h-light t-dark sz-btn-sm sh large-100 horiz-between" data-type="button-collapse">Générer</button>
+    </div>
 </div>
+<hr>
