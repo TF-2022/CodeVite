@@ -21,7 +21,7 @@
     background-color: #dc3545;
 }
 
-.notification.success2 {
+.notification.success {
     background-color: var(--cvt-color-grey-light);
     border: 2px solid #28a745;
 }

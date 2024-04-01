@@ -1,3 +1,4 @@
+/* input classic */
 .cvt-form-group {
     position: relative;
     border-bottom: 2px solid #3874ff3d;
@@ -64,4 +65,68 @@
 .cvt-form-group.search-input:focus-within {
     margin-left: 15px !important;
     margin-right: 15px !important;
+}
+
+/* number input */
+.number-input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* textArea */
+.cvt-textarea-group {
+    position: relative;
+    border-bottom: 2px solid #3874ff3d;
+    margin: 20px 0;
+    box-sizing: border-box;
+}
+
+.cvt-textarea-group:focus-within {
+    box-shadow: 0 0 0 2px #3874ff3d;
+    border-radius: var(--radius-1);
+    border-bottom: 2px solid transparent;
+}
+
+.cvt-textarea {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: transparent;
+    color: var(--text-color);
+    outline: none;
+}
+
+.cvt-textarea-group label {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    padding: 10px 0;
+    margin: 0;
+    transition: all 0.2s;
+    color: #9b9b9b;
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.cvt-textarea:focus + label, .cvt-textarea:not(:placeholder-shown) + label {
+    top: -20px;
+    left: 0;
+    color: #2f9bb3;
+    font-size: smaller;
+    background-color: var(--background-color);
+    padding: 0 5px;
+    border-radius: var(--radius-1);
+}
+
+.cvt-textarea::placeholder {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.cvt-textarea:focus::placeholder {
+    opacity: 1;
 }

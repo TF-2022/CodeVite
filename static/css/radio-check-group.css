@@ -1,0 +1,40 @@
+.cvt-group {
+    display: flex;
+  }
+  
+  .cvt-btn-group-check {
+    display: none;
+  }
+  
+  .cvt-btn-group {
+    padding: 0.375rem 0.75rem;
+    margin: 0;
+    background-color: white;
+    color: #0d6efd;
+    cursor: pointer;
+    border: 1px solid #6c757d;
+    border-radius: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+  }
+  
+  .cvt-btn-group-check:first-of-type + .cvt-btn-group {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  
+  .cvt-btn-group-check + .cvt-btn-group + .cvt-btn-group-check + .cvt-btn-group {
+    border-left: none;
+  }
+  
+  .cvt-btn-group-check:last-of-type + .cvt-btn-group {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  
+  .cvt-btn-group-check:checked + .cvt-btn-group {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+  }
+  

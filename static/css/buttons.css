@@ -34,6 +34,7 @@
     outline: none;
     border: 2px solid transparent;
     background-color: transparent;
+    text-decoration: none;
     gap: 10px;
   }
 

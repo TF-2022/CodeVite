@@ -473,8 +473,8 @@
 .horiz-end { display: flex !important; justify-content: flex-end !important; }
 .horiz-center { display: flex !important; justify-content: center !important; }
 .horiz-between { display: flex !important; justify-content: space-between !important; }
-.horiz-f-start { display: flex !important; align-items: flex-start !important; }
-.horiz-f-end { display: flex !important; align-items: flex-end !important; }
+.verti-start { display: flex !important; align-items: flex-start !important; }
+.verti-end { display: flex !important; align-items: flex-end !important; }
 .verti-center { display: flex !important; align-items: center !important; }
 
 /* Largeur */

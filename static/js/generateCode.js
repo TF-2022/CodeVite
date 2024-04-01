@@ -19,7 +19,13 @@ function showNotification(message, messageType) {
         setTimeout(() => notification.remove(), 500);
     }, 3000);
 }
-
+document.querySelectorAll('[data-notification-message]').forEach(button => {
+    button.addEventListener('click', function() {
+        const message = this.getAttribute('data-notification-message');
+        const messageType = this.getAttribute('data-notification-type') || 'info';
+        showNotification(message, messageType);
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     const editor = ace.edit("editor");
@@ -39,10 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-    document.querySelectorAll('input[data-type]').forEach(input => {
-        input.addEventListener('blur', function () {
+    document.querySelectorAll('input[data-type], textarea[data-type]').forEach(control => {
+        control.addEventListener('input', function () {
             const type = this.getAttribute('data-type');
-            const element = createElement(type, this.className, this.value);
+            const content = this.tagName === "TEXTAREA" ? this.value : this.innerText;
+            const element = createElement(type, this.className, content);
             if (element) {
                 const newCode = element.generateCode();
                 updateEditorCode(editor, newCode);
@@ -108,7 +115,8 @@ class ButtonCvtElement extends BaseElement {
         const sizeClass = document.querySelector('input[name="size"]:checked')?.value ?? '';
         const colorValue = document.querySelector('input[name="btnColor"]:checked')?.value ?? 'primary';
         const textColorValue = document.querySelector('input[name="btnTextColor"]:checked')?.value;
-
+        const isBtnNotifChecked = document.getElementById('checkbox-4mdoic8z2').checked;
+ 
         if (!isButtonChecked) {
             return '';
         }
@@ -148,6 +156,10 @@ class ButtonCvtElement extends BaseElement {
 
         let htmlCode = `<button class="${finalClasses.join(' ')}">${inputValue}</button>`;
 
+        if (isBtnNotifChecked) {
+            const notifTypeValue = document.querySelector('input[name="rad-notif-type"]:checked')?.value ?? 'add'
+            htmlCode = `<button class="${finalClasses.join(' ')}" data-notification-type="${notifTypeValue}" data-notification-message="message">${inputValue}</button>`;
+        }
         return htmlCode;
     }
 }
@@ -432,6 +444,7 @@ class AccordionsElement extends BaseElement {
 class CardsElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
+        this.isCardChecked = document.getElementById('checkbox-tr21xswbc').checked;
         this.cardCountInput = document.getElementById('cardCount');
         this.showHeader = document.getElementById('checkbox-showHeader').checked;
         this.showTitle = document.getElementById('checkbox-showTitle').checked;
@@ -441,6 +454,7 @@ class CardsElement extends BaseElement {
         this.showFooter = document.getElementById('checkbox-showFooter').checked;
         this.showShadow = document.getElementById('checkbox-showShadow').checked;
         this.cardCount = parseInt(this.cardCountInput.value, 10) || 3;
+        this.contentCardValue = document.querySelector('input[name="contentCard"]:checked')?.value;
 
         this.cardCountInput.addEventListener('change', this.handleCardCountChange.bind(this));
     }
@@ -451,8 +465,9 @@ class CardsElement extends BaseElement {
 
     generateCard(i) {
         const imageHtml = this.showImage ? `<img src="path/to/image" class="card-img-top" alt="Card image cap">` : '';
-        const bodyTextHtml = this.showBodyText ? `<p class="card-text">Ajouter du contenu ici.</p>` : '';
-        const buttonHtml = this.showButton ? `<a href="#" class="btn btn-primary">Go somewhere</a>` : '';
+        const textAlignmentClass = this.getTextAlignmentClass(this.contentCardValue);
+        const bodyTextHtml = this.showBodyText ? `<p class="card-text ${textAlignmentClass}">Ajouter du contenu ici.</p>` : '';
+        const buttonHtml = this.showButton ? `<a href="#" class="cvt-btn btn-n-light sh">Mon Bouton</a>` : '';
         const footerHtml = this.showFooter ? `<div class="card-footer">Footer ${i}</div>` : '';
         const cardStyle = this.showShadow ? 'style="box-shadow: var(--effet-ombre); border:none;"' : '';
 
@@ -482,7 +497,22 @@ class CardsElement extends BaseElement {
 </div>`;
     }
 
+    getTextAlignmentClass(value) {
+        switch (value) {
+            case 'start':
+                return 'horiz-start';
+            case 'center':
+                return 'horiz-center';
+            case 'end':
+                return 'horiz-end';
+            default:
+                return '';
+        }
+    }
     generateCode() {
+        if (!this.isCardChecked) {
+            return '';
+        }
         let cardsHtml = '';
         for (let i = 1; i <= this.cardCount; i++) {
             cardsHtml += this.generateCard(i) + '\n\n';
@@ -506,17 +536,33 @@ class InputElement extends BaseElement {
     }
 }
 
+class TexteAreaElement extends BaseElement {
+    generateCode() {
+        const textAreaId = `textArea-${this.uniqueId}`;
+        let htmlCode = '';
+
+        htmlCode += `
+<div class="cvt-textarea-group">
+    <textarea class="cvt-textarea" id="${textAreaId}" placeholder=" "></textarea>
+    <label for="${textAreaId}">Votre message...</label>
+</div>
+        `;
+
+        return htmlCode;
+    }
+}
+
 class NumberInputElement extends BaseElement {
     generateCode() {
         const numberInputContainerId = `number-input-${this.uniqueId}`;
         return `
 <div class="number-input-container" id="${numberInputContainerId}" data-number-input-id="${numberInputContainerId}">
-    <button type="button" class="cvt-btn btn-n-light sz-btn-sm sh" data-change="-1">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="-1">
         <i class="bi bi-arrow-down-circle"></i>
     </button>
-    <label><span class="number-value-display">10</span></label>
-    <input type="number" class="number-input" min="1" max="20" value="10" style="display: none;">
-    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm shf" data-change="1">
+    <label><span class="number-value-display">3</span></label>
+    <input type="number" class="number-input" id="${numberInputContainerId}" min="1" max="20" value="3" style="display: none;">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="1">
         <i class="bi bi-arrow-up-circle"></i>
     </button>
 </div>
@@ -607,6 +653,29 @@ class CheckboxElement extends BaseElement {
     }
 }
 
+class RadioElement extends BaseElement {
+    constructor(type, className, content) {
+        super(type, className, content);
+    }
+
+    generateCode() {
+        const radioCountInput = document.getElementById('radioCount');
+        const radioCount = parseInt(radioCountInput.value, 10) || 3;
+        const nameRadioInput = document.getElementById('input-v4ux67ccz').value;
+
+        let htmlCode = '';
+
+        for (let i = 1; i <= radioCount; i++) {
+            const radioId = `radio-${i}-${this.uniqueId}`;
+            htmlCode += `
+<label class="radio-cvt"><input type="radio" id="${radioId}" name="${nameRadioInput}" value="option_${i}">Option_${i}</label>
+            `;
+        }
+
+        return htmlCode.trim();
+    }
+}
+
 class DragAndDropElement extends BaseElement {
     constructor(type, className, content) {
         super(type, className, content);
@@ -664,7 +733,7 @@ class TabsElement extends BaseElement {
             const checkedAttribute = i === 1 ? ' checked="checked"' : '';
 
             tabsHtml += `    <input type="radio" id="${tabId}" name="tab-${this.uniqueId}" value="${contentId}" data-tab-target="${contentId}" style="display: none;"${checkedAttribute}>\n`;
-            tabsHtml += `    <label for="${tabId}">Tab ${i}</label>\n`;
+            tabsHtml += `    <label for="${tabId}">Tab_${i}</label>\n`;
         }
 
         tabsHtml += `</div>\n`;
@@ -910,7 +979,6 @@ class BadgesElement extends BaseElement {
     constructor(className) {
         super();
         this.className = className;
-        this.isBadgeChecked = document.getElementById('checkbox-ig07g74wz')?.checked ?? false;
         this.isLightChecked = document.getElementById('checkbox-t90k01vec')?.checked ?? false;
         this.isBorderChecked = document.getElementById('checkbox-n9d3avw23')?.checked ?? false;
         this.sizeBadgeValue = document.querySelector('input[name="sizeBadge"]:checked')?.value || '';
@@ -919,9 +987,6 @@ class BadgesElement extends BaseElement {
     }
 
     generateCode() {
-        if (!this.isBadgeChecked) {
-            return '';
-        }
 
         let baseStyleClass = this.isLightChecked ? 'bdg-light' : 'bdg';
 
@@ -941,6 +1006,113 @@ class BadgesElement extends BaseElement {
     }
 }
 
+class NotificationsElement extends BaseElement {
+    constructor(content) {
+        super();
+        this.content = content;
+    }
+
+    generateCode() {
+        const isAlertChecked = document.getElementById('checkbox-ot4eoeelg').checked;
+        const isCloseButtonChecked = document.getElementById('checkbox-qzmn5g7c8').checked;
+        const isIconChecked = document.getElementById('checkbox-00k4ivwny').checked;
+        const buttonCloseActive = isCloseButtonChecked ? 'data-notification-close="true"' : '';
+        const colorAlertValue = document.querySelector('input[name="colorAlert"]:checked')?.value ?? 'primary';
+        const iconTypeValue = document.querySelector('input[name="rad-group-icon-alert"]:checked')?.labels[0].textContent.toLowerCase() ?? 'info';
+        const isContentArea = document.getElementById('textArea-bkbo5zx01').value.trim() || 'Notification';
+
+        if (!isAlertChecked) {
+            return '';
+        }
+
+        let iconHref;
+        if (isIconChecked) {
+            switch(iconTypeValue) {
+                case 'success':
+                    iconHref = "#cvt-check-circle-fill";
+                    break;
+                case 'info':
+                    iconHref = "#cvt-info-fill";
+                    break;
+                case 'warning':
+                    iconHref = "#cvt-exclamation-triangle-fill";
+                    break;
+                case 'danger':
+                    iconHref = "#cvt-exclamation-triangle-fill";
+                    break;
+                default:
+                    iconHref = "";
+            }
+        }
+
+        const iconHtml = iconHref ? `<svg class="cvt-icon flex-shrink-0 me-2" role="img"><use xlink:href="${iconHref}" /></svg>` : '';
+
+        return `
+<div class="cvt-alert cvt-alert-${colorAlertValue}" role="alert" ${buttonCloseActive}>
+    ${iconHtml}
+    <div>${isContentArea}</div>
+</div>
+        `;
+    }
+}
+
+class NotificationButtonElement extends BaseElement {
+    generateCode() {
+        const isBtnNotifChecked = document.getElementById('checkbox-4mdoic8z2').checked;
+        const notifTypeValue = document.querySelector('input[name="rad-notif-type"]:checked')?.value ?? 'add';
+
+        if (!isBtnNotifChecked) {
+            return '';
+        }
+        
+        let htmlCode = '';
+
+        htmlCode += `
+<button class="cvt-btn btn-n-primary" data-notification-message="message" data-notification-type="${notifTypeValue}">Clique</button>
+        `;
+
+        return htmlCode;
+    }
+}
+
+class RadioGroupElement extends BaseElement {
+    constructor(content, className) {
+        super();
+        this.content = content;
+        this.className = className;
+    }
+
+    generateCode() {
+        const groupName = `rad-group-${this.uniqueId}`;
+        let htmlCode = `<div class="cvt-group" role="group" aria-label="Basic radio toggle button group">\n`;
+        for (let i = 1; i <= 3; i++) {
+            htmlCode += `    <input type="radio" class="cvt-btn-group-check" name="${groupName}" value="" id="${groupName}-${i}" autocomplete="off"${i === 1 ? ' checked' : ''}>\n`;
+            htmlCode += `    <label class="cvt-btn-group" for="${groupName}-${i}">Radio ${i}</label>\n`;
+        }
+        htmlCode += `</div>`;
+        return htmlCode;
+    }
+}
+
+class CheckboxGroupElement extends BaseElement {
+    constructor(content, className) {
+        super();
+        this.content = content;
+        this.className = className;
+    }
+
+    generateCode() {
+        let htmlCode = `<div class="cvt-group" role="group" aria-label="Basic checkbox toggle button group">\n`;
+        for (let i = 1; i <= 3; i++) {
+            const checkboxId = `check-group-${this.uniqueId}-${i}`;
+            htmlCode += `    <input type="checkbox" class="cvt-btn-group-check" id="${checkboxId}" autocomplete="off">\n`;
+            htmlCode += `    <label class="cvt-btn-group" for="${checkboxId}">Checkbox ${i}</label>\n`;
+        }
+        htmlCode += `</div>`;
+        return htmlCode;
+    }
+}
+
 
 
 
@@ -955,6 +1127,7 @@ const elementClasses = {
     'subsubsubsubtitle': TitleElement,
     'subsubsubsubsubtitle': TitleElement,
     'input': InputElement,
+    'textArea': TexteAreaElement,
     'input-number': NumberInputElement,
     'modal': ModalElement,
     'config-panel': ModalElement,
@@ -963,6 +1136,7 @@ const elementClasses = {
     'accordion': AccordionsElement,
     'toggle-switch': ToggleSwitchElement,
     'checkbox': CheckboxElement,
+    'radio': RadioElement,
     'card': CardsElement,
     'drag-drop': DragAndDropElement,
     'tabs-nav': TabsElement,
@@ -972,6 +1146,10 @@ const elementClasses = {
     'select': SelectElement,
     'grid': BootstrapGridElement,
     'badge': BadgesElement,
+    'notification': NotificationsElement,
+    'btn-notification': NotificationButtonElement,
+    'radio-group': RadioGroupElement,
+    'checkbox-group': CheckboxGroupElement,
 };
 
 function createElement(type, className, content) {

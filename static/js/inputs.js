@@ -78,6 +78,11 @@ class setupNumberInput {
       });
   }
 }
-
 document.querySelectorAll('.number-input-container').forEach(container => { new setupNumberInput(container);});
 
+
+// texteArea
+document.getElementById('cvt-custom-textarea').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = (this.scrollHeight) + 'px';
+});

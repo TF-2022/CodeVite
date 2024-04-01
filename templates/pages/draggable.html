@@ -1,10 +1,26 @@
-<label>Nombre d'éléments à glisser</label>
-<input type="number" id="dragElementsCount" value="3" min="1">
+<h3 id="6ffdv8hmr" class="text-cvt-bg-color">Éléments glissables</h3>
 <hr>
-<label>Nombre de carte</label>
-<input type="number" id="dragContainerCount" value="3" min="1">
-<label class="checkbox-cvt"><input type="checkbox" id="enableSwapCheckbox"> Echange d'éléments entre conteneurs</label>
+<label class="checkbox-cvt"><input type="checkbox" id="enableSwapCheckbox"> Echange unique</label>
+<div class="number-input-container" id="number-input-25dxp6q62" data-number-input-id="number-input-25dxp6q62">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="-1">
+        <i class="bi bi-arrow-down-circle"></i>
+    </button>
+    <label>Nombre d'éléments :<span class="number-value-display"></span></label>
+    <input type="number" id="dragElementsCount" class="number-input" min="1" max="20" value="3" style="display: none;">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="1">
+        <i class="bi bi-arrow-up-circle"></i>
+    </button>
+</div>
 <hr>
-
-<button class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-type="drag-drop">Générer item glissable</button>
-<br>
+<div class="number-input-container" id="number-input-prkr7ucqf" data-number-input-id="number-input-prkr7ucqf">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="-1">
+        <i class="bi bi-arrow-down-circle"></i>
+    </button>
+    <label>Nombre de carte :<span class="number-value-display"></span></label>
+    <input type="number" id="dragContainerCount" class="number-input" min="1" max="20" value="3" style="display: none;">
+    <button type="button" class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-change="1">
+        <i class="bi bi-arrow-up-circle"></i>
+    </button>
+</div>
+<hr>
+<button class="cvt-btn btn-h-warning t-dark sz-btn-sm sh" data-type="drag-drop">Générer</button>
