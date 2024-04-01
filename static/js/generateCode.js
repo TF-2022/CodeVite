@@ -19,6 +19,7 @@ function showNotification(message, messageType) {
         setTimeout(() => notification.remove(), 500);
     }, 3000);
 }
+
 document.querySelectorAll('[data-notification-message]').forEach(button => {
     button.addEventListener('click', function() {
         const message = this.getAttribute('data-notification-message');
@@ -93,6 +94,7 @@ class BaseElement {
         this.className = className;
         this.content = content;
         this.uniqueId = Math.random().toString(36).substr(2, 9);
+        this.cssStore = document.getElementById('cssStore');
     }
 
     generateCode() {
@@ -421,19 +423,22 @@ class AccordionsElement extends BaseElement {
     generateCode() {
         const accordionId = `accordion-${this.uniqueId}`;
         const multipleOpenAttribute = this.multipleOpen ? 'true' : 'false';
-        let accordionsHtml = `<div class="cvt-accordion" id="${accordionId}" data-multiple-open="${multipleOpenAttribute}">\n`;
+        let accordionsHtml = `<div class="cvt-accordion" id="${accordionId}" data-multiple-open="${multipleOpenAttribute}">`;
+        //var accordionCssContent = this.cssStore.dataset['accordions'];
+        //const isStyleCssChecked = document.getElementById('checkbox-03ecx972x').checked; 
 
         for (let i = 1; i <= this.accordionCount; i++) {
-            accordionsHtml += `    <div class="cvt-accordion-item">\n`;
-            accordionsHtml += `        <button class="cvt-accordion-button" aria-expanded="false" data-cvt-target="#${accordionId}-collapse${i}">\n`;
-            accordionsHtml += `            Accordion Item ${i} <i class="bi bi-chevron-down cvt-accordion-chevron"></i>\n`;
-            accordionsHtml += `        </button>\n`;
-            accordionsHtml += `        <div id="${accordionId}-collapse${i}" class="cvt-accordion-collapse">\n`;
-            accordionsHtml += `            <div class="cvt-accordion-body">\n`;
-            accordionsHtml += `                This is the content of accordion ${i}.\n`;
-            accordionsHtml += `            </div>\n`;
-            accordionsHtml += `        </div>\n`;
-            accordionsHtml += `    </div>\n`;
+            accordionsHtml += `
+<div class="cvt-accordion-item">
+    <button class="cvt-accordion-button" aria-expanded="false" data-cvt-target="#${accordionId}-collapse${i}">
+        Accordion Item ${i} <i class="bi bi-chevron-down cvt-accordion-chevron"></i>
+    </button>
+    <div id="${accordionId}-collapse${i}" class="cvt-accordion-collapse">
+        <div class="cvt-accordion-body">
+            This is the content of accordion ${i}.
+        </div>
+    </div>
+</div>`;
         }
 
         accordionsHtml += `</div>`;
@@ -621,6 +626,7 @@ class CheckboxElement extends BaseElement {
         const checkboxCollapseInputChecked = document.getElementById('checkbox-m1jfililx')?.checked;
         const checkboxCollapseCheckboxChecked = document.getElementById('checkbox-2tpytaeyd')?.checked;
         const multipleOptionsChecked = document.getElementById('checkbox-check-5m12adjzu-1')?.checked ? "true" : "false";
+        const isInputValue = document.getElementById('input-07qzte9o7')?.value;
 
         const uniqueId = `${this.uniqueId}`;
         const baseIdCheckbox = `checkbox-${uniqueId}`;
@@ -635,12 +641,13 @@ class CheckboxElement extends BaseElement {
         } else if (checkboxCollapseInputChecked) {
             htmlCode += `data-cvt-checkbox-collapse="${dataTargetInput}" `;
         }
-        htmlCode += `>Checkbox</label>\n`;
+        htmlCode += `>${isInputValue}</label>\n`;
 
         if (checkboxCollapseCheckboxChecked) {
             htmlCode += `<div class="collapse-cvt-container" data-cvt-checkbox-group="${dataTargetCheckbox}" data-cvt-checkbox-multiple="${multipleOptionsChecked}" style="display: none;">\n`;
-            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-1">Option_1</label>\n`;
-            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-2">Option_2</label>\n`;
+            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-1">${isInputValue}_1</label>\n`;
+            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-2">${isInputValue}_2</label>\n`;
+            htmlCode += `    <label class="checkbox-cvt"><input type="checkbox" id="${baseIdCheckbox}-3">${isInputValue}_3</label>\n`;
             htmlCode += `</div>\n`;
         } else if (checkboxCollapseInputChecked) {
             htmlCode += `<div class="cvt-form-group collapse-cvt-container" data-cvt-checkbox-group="${dataTargetInput}" data-cvt-checkbox-multiple="${multipleOptionsChecked}" style="display: none;">\n`;
@@ -913,23 +920,19 @@ class BootstrapGridElement extends BaseElement {
         this.breakpointPrefix = document.getElementById('colSizeSelect').value;
         this.colConfig = document.getElementById('colConfig').value;
         this.adaptationMobile = document.getElementById('checkbox-h7al54lyf').checked;
-        this.centerContent = document.getElementById('checkbox-kgq7tnp4w').checked;
-        this.spaceBetween = document.getElementById('checkbox-5fj65a36z').checked;
-        this.alignItemsCenter = document.getElementById('checkbox-2dh39quyo').checked;
-
+        this.cardDisposition = document.querySelector('input[name="cardDisposition"]:checked')?.value ?? '';
+        this.applyToColOrRow = document.querySelector('input[name="colOrRow"]:checked')?.value ?? '';
     }
 
     generateGrid() {
         let gridHtml = this.useContainer ? '<div class="container">\n' : '';
         let rowClasses = "row";
+        let colClassesModifier = "";
 
-        if (this.centerContent) {
-            rowClasses += " d-flex justify-content-center";
-        } else if (this.spaceBetween) {
-            rowClasses += " d-flex justify-content-between";
-        }
-        if (this.alignItemsCenter) {
-            rowClasses += " align-items-center";
+        if (this.applyToColOrRow === 'row' && this.cardDisposition) {
+            rowClasses += ` d-flex justify-content-${this.cardDisposition}`;
+        } else if (this.applyToColOrRow === 'col' && this.cardDisposition) {
+            colClassesModifier = `d-flex justify-content-${this.cardDisposition} `;
         }
 
         gridHtml += this.useRow ? `  <div class="${rowClasses}">\n` : '';
@@ -937,8 +940,8 @@ class BootstrapGridElement extends BaseElement {
         const colConfigs = this.colConfig.split('-');
         colConfigs.forEach(config => {
             const colSize = parseInt(config, 10);
-            const colClasses = this.generateBreakpointClasses(colSize);
-            gridHtml += `    <div class="${colClasses} mb-4">Contenu</div>\n`;
+            let colClasses = `${colClassesModifier}${this.generateBreakpointClasses(colSize)}`;
+            gridHtml += `    <div class="${colClasses.trim()} mb-4">Contenu</div>\n`;
         });
 
         gridHtml += this.useRow ? '  </div>\n' : '';
@@ -1014,6 +1017,8 @@ class NotificationsElement extends BaseElement {
 
     generateCode() {
         const isAlertChecked = document.getElementById('checkbox-ot4eoeelg').checked;
+        var notificationsCssContent = this.cssStore.dataset['notifications'];
+        const isStyleCssChecked = document.getElementById('checkbox-788rdbedy').checked;
         const isCloseButtonChecked = document.getElementById('checkbox-qzmn5g7c8').checked;
         const isIconChecked = document.getElementById('checkbox-00k4ivwny').checked;
         const buttonCloseActive = isCloseButtonChecked ? 'data-notification-close="true"' : '';
@@ -1046,8 +1051,10 @@ class NotificationsElement extends BaseElement {
         }
 
         const iconHtml = iconHref ? `<svg class="cvt-icon flex-shrink-0 me-2" role="img"><use xlink:href="${iconHref}" /></svg>` : '';
+        const styleHtml = isStyleCssChecked ? `<style>${notificationsCssContent}</style>` : '';
 
         return `
+${styleHtml}
 <div class="cvt-alert cvt-alert-${colorAlertValue}" role="alert" ${buttonCloseActive}>
     ${iconHtml}
     <div>${isContentArea}</div>

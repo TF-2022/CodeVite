@@ -187,7 +187,12 @@
     </main>
 
     {% endblock %}
+    <div id="cssStore" style="display:none;" {% for nom_variable, contenu_css in css_contenus.items() %} data-{{
+        nom_variable }}="{{ contenu_css | safe }}" {% endfor %}></div>
 
+
+    
+    
     <script>
         function updateLayout() {
             const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
