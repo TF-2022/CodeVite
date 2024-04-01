@@ -1017,8 +1017,6 @@ class NotificationsElement extends BaseElement {
 
     generateCode() {
         const isAlertChecked = document.getElementById('checkbox-ot4eoeelg').checked;
-        var notificationsCssContent = this.cssStore.dataset['notifications'];
-        const isStyleCssChecked = document.getElementById('checkbox-788rdbedy').checked;
         const isCloseButtonChecked = document.getElementById('checkbox-qzmn5g7c8').checked;
         const isIconChecked = document.getElementById('checkbox-00k4ivwny').checked;
         const buttonCloseActive = isCloseButtonChecked ? 'data-notification-close="true"' : '';
@@ -1051,10 +1049,8 @@ class NotificationsElement extends BaseElement {
         }
 
         const iconHtml = iconHref ? `<svg class="cvt-icon flex-shrink-0 me-2" role="img"><use xlink:href="${iconHref}" /></svg>` : '';
-        const styleHtml = isStyleCssChecked ? `<style>${notificationsCssContent}</style>` : '';
 
         return `
-${styleHtml}
 <div class="cvt-alert cvt-alert-${colorAlertValue}" role="alert" ${buttonCloseActive}>
     ${iconHtml}
     <div>${isContentArea}</div>
