@@ -1116,6 +1116,44 @@ class CheckboxGroupElement extends BaseElement {
     }
 }
 
+class MoveHideShowSectionElement extends BaseElement {
+    generateCode() {
+        const moveHideShowSectionId = `move-hide-show-section-${this.uniqueId}`;
+
+        let htmlCode = `
+<div class="cvt-dropdown" id="${moveHideShowSectionId}" data-hover-toggle="false">
+    <button class="btn cvt-dropdown-toggle" type="button">Actions</button>
+    <div class="cvt-dropdown-menu" data-cvt-auto-close="true">`;
+
+        for (let i = 1; i <= 4; i++) {
+            const sectionId = `section${i}-${this.uniqueId}`;
+            htmlCode += `
+        <a class="cvt-dropdown-item" href="#" data-action="move" data-target="#${sectionId}">Mettre Section ${i} en premier</a>
+        <a class="cvt-dropdown-item" href="#" data-action="hide" data-target="#${sectionId}">Masquer Section ${i}</a>
+        <a class="cvt-dropdown-item" href="#" data-action="show" data-target="#${sectionId}">Afficher Section ${i}</a>
+            `;
+            if (i < 4) {
+                htmlCode += '<div class="dropdown-divider"></div>';
+            }
+        }
+
+        htmlCode += `</div></div><div id="sectionsContainer-${this.uniqueId}" class="mt-3">`;
+
+        for (let i = 1; i <= 4; i++) {
+            const sectionId = `section${i}-${this.uniqueId}`;
+            htmlCode += `
+<div id="${sectionId}" class="section my-5">
+    <h2>Section ${i}</h2>
+    <p>Contenu de la section ${i}...</p>
+</div>`;
+        }
+
+        htmlCode += `
+</div>`;
+        return htmlCode;
+    }
+}
+
 
 
 
@@ -1153,6 +1191,7 @@ const elementClasses = {
     'btn-notification': NotificationButtonElement,
     'radio-group': RadioGroupElement,
     'checkbox-group': CheckboxGroupElement,
+    'move-hide-show-Section': MoveHideShowSectionElement,
 };
 
 function createElement(type, className, content) {
